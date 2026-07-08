@@ -45,6 +45,17 @@ button {
   background-position: center top;
   background-size: cover;
   color: var(--text-color);
+
+    overflow-x: hidden !important; 
+
+}
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden !important; /* Forces total containment stability */
 }
 
 .site-header,
