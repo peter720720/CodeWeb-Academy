@@ -848,6 +848,68 @@ html, body {
   .nav-links.open .nav-panel {
     overflow-y: auto;
   }
+
+
+  @media (max-width: 960px) {
+  /* ... keeping your hamburger styles untouched ... */
+
+  .nav-links {
+    display: none;
+  }
+  
+  /* Forces the menu overlay to reveal itself properly when active */
+  .nav-links.open {
+    display: flex !important; /* Changed from display: block to flex for proper layout grid rendering */
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.98) !important; /* Replaced semi-transparent tint with your clear dark canvas tone */
+    padding: 24px;
+    z-index: 100;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    overflow-y: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Stabilizes the interior nav column link card box */
+  .nav-links.open .nav-panel {
+    width: min(100%, 560px);
+    margin: 0 auto;
+    background: transparent !important; /* Clears gray transparency boxes */
+    border: none !important;            /* Removes double border lines */
+    padding: 0;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;              /* Adds balanced vertical space between link text blocks */
+    align-items: stretch;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Ensures each active link spreads full-width and remains highly visible */
+  .nav-links.open .nav-link {
+    display: block !important;
+    padding: 16px 24px !important;
+    border-radius: 999px !important; /* Matches your beautiful pill button design language */
+    text-align: center !important;
+    font-size: 1.15rem !important;   /* Slightly boosts sizing for quick thumb tap interactions */
+    font-weight: 600 !important;
+    color: var(--text-color) !important;
+    background: var(--button-secondary-bg, rgba(255, 255, 255, 0.04)) !important;
+    border: 1px solid var(--button-secondary-border, rgba(255, 255, 255, 0.1)) !important;
+  }
+
+  /* Highlight state when a page is actively being viewed */
+  .nav-links.open .nav-link.active,
+  .nav-links.open .nav-link:hover {
+    background: var(--accent-color) !important;
+    color: #ffffff !important;
+    border-color: var(--accent-color) !important;
+  }
+}
+
 }
 
 /* Improve footer spacing on small screens */
