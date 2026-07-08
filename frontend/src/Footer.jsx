@@ -2,12 +2,26 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function Footer() {
+  // Checks if the user's viewport screen is smaller than a mobile threshold width (640px)
+  const isMobile = window.innerWidth <= 640;
+
   return (
     <footer className="site-footer" style={{ padding: '64px 24px 40px' }}>
-      <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr repeat(3, 1fr)', gap: '40px', maxWidth: '1440px', margin: '0 auto', width: '100%' }}>
+      <div 
+        className="footer-grid" 
+        style={{ 
+          display: 'grid', 
+          // Dynamically sets to a single column on mobile, or 4 columns on desktop layouts
+          gridTemplateColumns: isMobile ? '1fr' : '1.2fr repeat(3, 1fr)', 
+          gap: isMobile ? '36px' : '40px', 
+          maxWidth: '1440px', 
+          margin: '0 auto', 
+          width: '100%' 
+        }}
+      >
         
         {/* Column 1: Brand Info, Address, & Social Profiles */}
-        <div className="footer-meta-column">
+        <div className="footer-meta-column" style={{ maxWidth: isMobile ? '100%' : '360px' }}>
           <Link to="/" style={{ display: 'inline-block', marginBottom: '16px' }}>
             <img 
               src="/logo.png" 
@@ -16,7 +30,7 @@ function Footer() {
             />
           </Link>
           
-          <p style={{ opacity: 0.85, fontSize: '0.92rem' }}>
+          <p style={{ opacity: 0.85, fontSize: '0.92rem', marginBottom: '12px' }}>
             Empowering the next generation of digital builders with project-driven code pathways and elite technical mentorship workflows.
           </p>
 
@@ -27,8 +41,8 @@ function Footer() {
             <span>Yaba, Lagos, Nigeria</span>
           </div>
 
-          {/* Social Media Link Array Icons */}
-          <div className="footer-social-row">
+          {/* Social Media Link Array Icons forced side-by-side on mobile rows */}
+          <div className="footer-social-row" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '12px', marginTop: '16px' }}>
             {/* Facebook */}
             <a href="https://facebook.com" target="_blank" rel="noreferrer" className="social-icon-btn" aria-label="Facebook">
               <svg viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/></svg>
@@ -62,8 +76,8 @@ function Footer() {
         </div>
 
         {/* Column 2: Academic Pathways Links */}
-        <div>
-          <h4 className="footer-heading" style={{ fontSize: '1rem', marginBottom: '16px', letterSpacing: '0.05em' }}>ACADEMICS</h4>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <h4 className="footer-heading" style={{ fontSize: '1rem', marginBottom: '4px', letterSpacing: '0.05em' }}>ACADEMICS</h4>
           <Link to="/courses">Frontend Engineering</Link>
           <Link to="/courses">Backend Systems</Link>
           <Link to="/courses">Full-Stack Development</Link>
@@ -71,8 +85,8 @@ function Footer() {
         </div>
 
         {/* Column 3: Corporate Portals */}
-        <div>
-          <h4 className="footer-heading" style={{ fontSize: '1rem', marginBottom: '16px', letterSpacing: '0.05em' }}>RESOURCES</h4>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <h4 className="footer-heading" style={{ fontSize: '1rem', marginBottom: '4px', letterSpacing: '0.05em' }}>RESOURCES</h4>
           <Link to="/opportunities">Career Opportunities</Link>
           <Link to="/about">About Academy</Link>
           <Link to="/enroll">Student Dashboard</Link>
@@ -80,11 +94,11 @@ function Footer() {
         </div>
 
         {/* Column 4: Contact Connect Help desk */}
-        <div>
-          <h4 className="footer-heading" style={{ fontSize: '1rem', marginBottom: '16px', letterSpacing: '0.05em' }}>SUPPORT</h4>
-          <p style={{ margin: '0 0 8px', fontSize: '0.9rem' }}>Questions or Admissions support?</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <h4 className="footer-heading" style={{ fontSize: '1rem', marginBottom: '4px', letterSpacing: '0.05em' }}>SUPPORT</h4>
+          <p style={{ margin: '0', fontSize: '0.9rem' }}>Questions or Admissions support?</p>
           <a href="mailto:admissions@codeweb.edu" style={{ fontWeight: '700', color: 'var(--accent-color)' }}>admissions@codeweb.edu</a>
-          <p style={{ margin: '12px 0 0', fontSize: '0.85rem', opacity: 0.7 }}>Response timeframe: 24hrs</p>
+          <p style={{ margin: '0', fontSize: '0.85rem', opacity: 0.7 }}>Response timeframe: 24hrs</p>
         </div>
 
       </div>
