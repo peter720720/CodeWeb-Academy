@@ -1036,11 +1036,14 @@ button {
   .button-secondary,
   .button-tertiary {
     width: 100%;
-    justify-content: center;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     
-    /* ADD THESE THREE LINES TO FIX MOBILE DIMENSIONS */
-    padding: 12px 20px !important;    /* Tighters down mobile padding to fix oval shape */
-    border-radius: 14px !important;   /* Cleaner, modern pill layout for mobile rows */
-    min-height: auto !important;      /* Clears any inherited layout box heights */
+    /* CRITICAL: FORCES PERFECT PILL SHAPE ON MOBILE WITHOUT THE OVAL STRETCH */
+    padding: 12px 24px !important;    /* Tighter padding stops vertical growth */
+    border-radius: 999px !important;  /* Keeps the exact fluid desktop rounded shape */
+    min-height: auto !important;      /* Overrides any rigid layout block heights */
+    box-sizing: border-box !important;
   }
 }
