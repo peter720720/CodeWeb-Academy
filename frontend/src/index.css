@@ -1029,21 +1029,34 @@ button {
 }
 
 @media (max-width: 640px) {
-  /* ... keeping your header and hero-panel overrides untouched ... */
+  /* ... keeping your header and hamburger overrides untouched ... */
 
+  /* 1. CRITICAL: Override the heavy hero flex layout rules forcing the buttons to stretch tall */
+  .hero-actions,
+  .hero-actions .button,
+  .hero-actions .button.button-primary,
+  .hero-actions .button.button-secondary {
+    display: flex !important;
+    flex: none !important;      /* Stops flex grow from ballooning button container heights */
+    width: 100% !important;     /* Keeps them full-width across the mobile screen */
+    min-width: 0 !important;    /* Overrides the conflicting 140px/200px rules */
+    height: auto !important;    /* Forces it to shrink back to contents scale */
+  }
+
+  /* 2. Style alignment values to force a slim, perfect pill presentation shape */
   .button,
   .button-outline,
   .button-secondary,
   .button-tertiary {
-    width: 100%;
+    width: 100% !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     
-    /* CRITICAL: FORCES PERFECT PILL SHAPE ON MOBILE WITHOUT THE OVAL STRETCH */
-    padding: 12px 24px !important;    /* Tighter padding stops vertical growth */
-    border-radius: 999px !important;  /* Keeps the exact fluid desktop rounded shape */
-    min-height: auto !important;      /* Overrides any rigid layout block heights */
+    /* Strict padding limits to guarantee a tight, slim design wrapping effect */
+    padding: 12px 20px !important;    /* Drops vertical spacing to keep it thin */
+    height: 48px !important;          /* Explicit fixed height for perfect mobile proportions */
+    border-radius: 999px !important;  /* Keeps the precise desktop rounded capsule curve */
     box-sizing: border-box !important;
   }
 }
