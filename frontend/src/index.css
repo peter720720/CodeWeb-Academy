@@ -910,52 +910,74 @@ html, body {
   }
 }
 
- .site-header {
-    padding: 16px 24px !important; /* Retains symmetric left/right breathing spaces */
+  /* 1. FORCE LOGO TO LEFT AND ALL CONTROL TOOL BUTTONS TO RIGHT */
+  .site-header {
+    padding: 16px 20px !important; /* Elegant uniform space from screen edges */
     display: flex !important;
     flex-direction: row !important;
-    justify-content: space-between !important;
-    align-items: center !important; /* Keeps the right action group perfectly level with your logo height */
+    justify-content: space-between !important; /* Pushes brand left, tools right */
+    align-items: center !important;
     box-sizing: border-box !important;
     width: 100% !important;
   }
 
+  /* Keeps your brand logo section structural flow clean */
   .brand.brand-link {
     margin: 0 !important;
     padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 1 auto !important;
   }
 
-  /* 2. FORCES THE SPINNER TO LAYER DIRECTLY UNDERNEATH THE HAMBURGER LINES CONTROLS */
+  /* 2. GROUP THE HAMBURGER BAR AND THE SPINNER VERTICALLY ON THE RIGHT SIDE */
   .nav-tools {
     display: flex !important;
-    flex-direction: column !important; /* Stack columns vertically instead of a horizontal row row */
-    align-items: center !important;     /* Centers both components perfectly across the alignment block */
-    gap: 12px !important;              /* Adds clear, tight vertical space between them */
+    flex-direction: column !important; /* Stacks the spinning wheel directly below the menu button */
+    align-items: flex-end !important; /* Aligns them flush to the right margin line */
+    gap: 10px !important;             /* Balanced vertical space between both items */
     margin: 0 !important;
     padding: 0 !important;
+    flex: 0 0 auto !important;
   }
 
-  /* Stabilizes the size behavior of your menu bar block */
+  /* 3. ENSURES THE HAMBURGER MENU BUTTON SECTIONS RENDER FULL WIDTH */
   .hamburger {
     display: inline-flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 46px !important;            /* Fixed width so your dashes '---' don't compress */
+    height: 44px !important;
     margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
     flex-shrink: 0 !important;
   }
 
-  /* Ensures the color wheel keeps its precise square dimensions when stacked */
+  /* Fixes horizontal dashes display parameters inside your button wrapper */
+  .hamburger span {
+    width: 20px !important;
+    margin: 2px auto !important;
+    display: block !important;
+  }
+
+  /* 4. BALANCES THE COLOR WHEEL FOOTPRINT STACKED BELOW IT */
   .color-toggle {
+    width: 44px !important;
+    height: 44px !important;
     margin: 0 !important;
-    flex-shrink: 0 !important;
     display: grid !important;
     place-items: center !important;
+    flex-shrink: 0 !important;
   }
 
-  /* Adjusts the dropdown swatch circles drawer coordinate paths relative to the stacked setup */
+  /* Shifts dropdown swatch container options coordinates safely downward */
   .color-panel {
-    top: 106px !important; /* Pushed further down so it clears your stacked icons cleanly */
-    right: 0 !important;
+    top: 110px !important;
+    right: 20px !important;
     left: auto !important;
-    z-index: 9999 !important;
+    z-index: 99999 !important;
   }
 }
 
