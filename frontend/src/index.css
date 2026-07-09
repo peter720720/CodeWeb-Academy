@@ -949,51 +949,57 @@ html, body {
   /* 2. GROUP THE HAMBURGER BAR AND THE SPINNER VERTICALLY ON THE RIGHT SIDE */
   .nav-tools {
     display: flex !important;
-    flex-direction: column !important; /* Stacks the spinning wheel directly below the menu button */
-    align-items: flex-end !important; /* Aligns them flush to the right margin line */
-    gap: 10px !important;             /* Balanced vertical space between both items */
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    padding-top: 14px !important;
     margin: 0 !important;
-    padding: 0 !important;
+    gap: 16px !important;
     flex: 0 0 auto !important;
+    
+    /* CRITICAL LAYER: Elevates the button controls above the full-page overlay screen background */
+    z-index: 10000000 !important; 
   }
 
-  /* 3. ENSURES THE HAMBURGER MENU BUTTON SECTIONS RENDER FULL WIDTH */
+  /* 2. MAKES THE HAMBURGER / CLOSE ICON REMAIN SHARP AND SECURE ON TOP */
   .hamburger {
     display: inline-flex !important;
     flex-direction: column !important;
     justify-content: center !important;
     align-items: center !important;
-    width: 46px !important;            /* Fixed width so your dashes '---' don't compress */
+    width: 46px !important;
     height: 44px !important;
     margin: 0 !important;
     padding: 0 !important;
     box-sizing: border-box !important;
     flex-shrink: 0 !important;
+    
+    /* Forces total click response priority layout rules */
+    position: relative !important;
+    z-index: 10000001 !important;
   }
 
-  /* Fixes horizontal dashes display parameters inside your button wrapper */
-  .hamburger span {
-    width: 20px !important;
-    margin: 2px auto !important;
-    display: block !important;
-  }
-
-  /* 4. BALANCES THE COLOR WHEEL FOOTPRINT STACKED BELOW IT */
-  .color-toggle {
-    width: 44px !important;
-    height: 44px !important;
-    margin: 0 !important;
-    display: grid !important;
-    place-items: center !important;
-    flex-shrink: 0 !important;
-  }
-
-  /* Shifts dropdown swatch container options coordinates safely downward */
-  .color-panel {
-    top: 110px !important;
-    right: 20px !important;
-    left: auto !important;
-    z-index: 99999 !important;
+  /* 3. DROPS THE SCREEN BACKGROUND LAYER SLIGHTLY SO THE CONTROLS SIT ON TOP */
+  .nav-links.open {
+    display: flex !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    background: #020617 !important;
+    padding: 140px 24px 40px !important; /* Raised padding so links clear your top buttons perfectly */
+    
+    /* Placed just beneath the nav-tools index row layer */
+    z-index: 999999 !important; 
+    overflow-y: auto !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+    
+    /* DISABLES OUTSIDE CLICK INTERRUPTIONS IN THE CONTAINER BACKGROUND LAYER */
+    pointer-events: auto !important; 
   }
 }
 
