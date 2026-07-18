@@ -115,28 +115,16 @@ html, body {
 }
 
 .nav-links {
-    display: flex !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    min-height: 100vh !important;
-    background: #020617 !important;
-    padding: 140px 24px 40px !important;
-    z-index: 999999 !important;
-    overflow-y: auto !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    align-items: center !important;
-    box-sizing: border-box !important;
-    
-    /* ANIMATION TRANSLATION PARAMS: Slides the panel out of view to the absolute left */
-    transform: translateX(-100%) !important;
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important; /* Sweet, smooth spring-like slide physics */
-    pointer-events: none !important;
-  }
-  
+  display: flex !important;
+  transform: none !important; /* Forces links to stay fully visible on computer screens */
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: auto !important;
+  background: transparent !important;
+  padding: 0 !important;
+  pointer-events: auto !important;
+}  
   /* 2. SLIDES THE MENU SCREEN IN FROM THE LEFT VIEWPORT BOUNDARY WHEN OPENED */
   .nav-links.open {
     transform: translateX(0) !important; /* Snaps smoothly back to full position */
@@ -710,11 +698,13 @@ html, body {
 
 @media (max-width: 640px) {
   .site-header {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
-    gap: 8px 14px;
-    align-items: center;
+    padding: 16px 20px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
   }
 
   .brand {
@@ -819,6 +809,43 @@ html, body {
 .hamburger.open span:nth-child(3) {
   transform: translateY(-6px) rotate(-45deg);
 }
+
+/* --- MOBILE NAVIGATION TRANSITION OVERRIDE --- */
+@media (max-width: 768px) {
+  /* 1. Hides the 'X' / close toggle button completely */
+  .code-web-academy-menu-toggle, 
+  button[aria-label*="close"], 
+  button:has(> svg),
+  .X,
+  .close-btn,
+  div:has(> .X) { 
+    display: none !important; 
+  }
+
+  /* 2. Forces the menu container to animate from the top */
+  /* Note: Replace '.mobile-menu-container' with your actual layout class if known */
+  .mobile-menu-container,
+  div[class*="sidebar"],
+  div[class*="menu"],
+  div[id*="menu"] {
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    width: 100% !important;
+    transform: translateY(-100%) !important;
+    transition: transform 0.4s ease-in-out !important;
+  }
+
+  /* 3. Slides the container down when your state class is active */
+  .mobile-menu-container.open,
+  div[class*="sidebar"][class*="open"],
+  div[class*="menu"][class*="active"],
+  div[class*="show"] {
+    transform: translateY(0) !important;
+  }
+}
+
 
 @media (max-width: 960px) {
   .hamburger {
@@ -977,8 +1004,6 @@ html, body {
     margin: 0 !important;
     gap: 16px !important;
     flex: 0 0 auto !important;
-    
-    /* CRITICAL LAYER: Elevates the button controls above the full-page overlay screen background */
     z-index: 10000000 !important; 
   }
 
@@ -994,12 +1019,10 @@ html, body {
     padding: 0 !important;
     box-sizing: border-box !important;
     flex-shrink: 0 !important;
-    
-    /* Forces total click response priority layout rules */
     position: relative !important;
     z-index: 10000001 !important;
   }
-
+  
   /* 3. DROPS THE SCREEN BACKGROUND LAYER SLIGHTLY SO THE CONTROLS SIT ON TOP */
   .nav-links.open {
     display: flex !important;

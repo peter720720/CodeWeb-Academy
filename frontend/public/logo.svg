@@ -1,0 +1,7 @@
+<svg xmlns="http://w3.org" viewBox="0 0 32 32" width="32" height="32">
+  <!-- This draws the perfect black rounded background circle -->
+  <circle cx="16" cy="16" r="16" fill="#000000" />
+  
+  <!-- This pulls in your existing logo-1.png asset and centers it inside the circle -->
+  <image href="/logo-1.png" x="4" y="4" width="24" height="24" preserveAspectRatio="xMidYMid meet" />
+</svg>

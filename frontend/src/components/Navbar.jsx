@@ -55,18 +55,13 @@ function Navbar({ accentColor, currentThemeId, colors, onColorChange, theme }) {
   }, [isMenuOpen, isColorOpen]);
 
 
-  const getLogoFilter = () => {
-    if (theme === 'white') {
-      return 'brightness(0)'; 
-    }
-    return 'brightness(0) invert(1)'; 
-  };
+  const getLogoFilter = () => 'none';
 
   return (
     <header className="site-header">
       <Link to="/" className="brand brand-link">
         <img 
-          src="/logo.png" 
+          src="/logo-3.png" 
           alt="CodeWeb logo" 
           style={{ 
             height: '110px', 

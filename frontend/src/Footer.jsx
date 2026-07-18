@@ -24,7 +24,7 @@ function Footer() {
         <div className="footer-meta-column" style={{ maxWidth: isMobile ? '100%' : '360px' }}>
           <Link to="/" style={{ display: 'inline-block', marginBottom: '16px' }}>
             <img 
-              src="/logo.png" 
+              src="/logo-3.png" 
               alt="CodeWeb logo" 
               style={{ height: '76px', width: 'auto', objectFit: 'contain', display: 'block' }} 
             />

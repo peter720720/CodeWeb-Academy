@@ -20,7 +20,7 @@ function Loader() {
 
           {/* Central Branding Logo Image (Increased to 110px width and height) */}
           <img 
-            src="/logo.png" 
+            src="/logo-3.png" 
             alt="CodeWeb logo mark" 
             style={{ 
               width: '110px', 
@@ -28,7 +28,7 @@ function Loader() {
               objectFit: 'contain',
               display: 'block',
               zIndex: '10',
-              filter: 'brightness(0) invert(1)' 
+              filter: 'none' 
             }} 
           />
         </div>
