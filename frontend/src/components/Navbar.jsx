@@ -7,6 +7,7 @@ function Navbar({ accentColor, currentThemeId, colors, onColorChange, theme }) {
   const menuRef = useRef(null);
   const colorRef = useRef(null);
   const links = [
+    { to: '/', label: 'Home' },
     { to: '/about', label: 'About' },
     { to: '/courses', label: 'Courses' },
     { to: '/opportunities', label: 'Opportunities' },
@@ -111,9 +112,15 @@ function Navbar({ accentColor, currentThemeId, colors, onColorChange, theme }) {
           className={`color-toggle ${isColorOpen ? 'open' : ''}`}
           onClick={() => setIsColorOpen((prev) => !prev)}
           aria-expanded={isColorOpen}
-          aria-label="Toggle color selector"
+          aria-label="Toggle settings"
         >
-          <span className="color-toggle-icon" />
+          <svg
+            viewBox="0 0 24 24"
+            className="settings-icon"
+            aria-hidden="true"
+          >
+            <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm8.43-1.22a1 1 0 0 0 .09-1.16l-1.18-2.05a.99.99 0 0 0-.92-.52l-2.37.09a7.16 7.16 0 0 0-1.34-.78l-.36-2.4a1 1 0 0 0-.98-.86h-2.36a1 1 0 0 0-.98.86l-.36 2.4a7.16 7.16 0 0 0-1.34.78l-2.37-.09a.99.99 0 0 0-.92.52L3.48 13.12a1 1 0 0 0 .09 1.16l1.83 2.15a.98.98 0 0 0 .9.38l2.37-.38c.4.34.84.61 1.34.78l.36 2.4a1 1 0 0 0 .98.86h2.36a1 1 0 0 0 .98-.86l.36-2.4c.5-.17.94-.44 1.34-.78l2.37.38a.98.98 0 0 0 .9-.38l1.83-2.15Z" />
+          </svg>
         </button>
 
         <div ref={colorRef} className={`color-panel ${isColorOpen ? 'active' : ''}`}>

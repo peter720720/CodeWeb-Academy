@@ -188,17 +188,11 @@ html, body {
 }
 
 .color-toggle-icon {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  border-top-color: var(--accent-color);
-  border-right-color: var(--accent-color);
-  animation: spin 1.4s linear infinite;
-}
-
-.color-toggle.open .color-toggle-icon {
-  animation: spin 1.4s linear infinite;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  border-radius: 16px;
 }
 
 .color-panel {
@@ -731,11 +725,46 @@ html, body {
   }
 
   .nav-links {
-    grid-column: 1 / -1;
-    grid-row: 3 / 4;
-    width: 100%;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    display: flex !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 10px 10px 12px !important;
+    background: rgba(2, 6, 23, 0.96) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.28) !important;
+    z-index: 999 !important;
+  }
+
+  .nav-links .nav-panel {
+    display: flex !important;
+    width: 100% !important;
+    justify-content: space-between !important;
+    gap: 6px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+  }
+
+  .nav-links .nav-link {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 10px 8px !important;
+    font-size: 0.78rem !important;
+    border-radius: 16px !important;
+    text-align: center !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .nav-link.enroll-button {
+    display: none !important;
   }
 
   .hero-panel,
@@ -773,6 +802,37 @@ html, body {
     width: 100%;
     justify-content: center;
   }
+
+  .site-header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    background: rgba(2, 6, 23, 0.95) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .hamburger {
+    display: none !important;
+  }
+
+  .nav-tools {
+    gap: 0 !important;
+  }
+
+  .page-content {
+    padding-top: 96px !important;
+    padding-bottom: 76px !important;
+  }
+}
+
+.settings-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+  fill: currentColor;
+  animation: spin 1.4s linear infinite;
 }
 
 /* Mobile hamburger menu styles */
@@ -1027,13 +1087,13 @@ html, body {
   .nav-links.open {
     display: flex !important;
     position: fixed !important;
-    top: 0 !important;
+    top: 72px !important;
     left: 0 !important;
     width: 100vw !important;
-    height: 100vh !important;
-    min-height: 100vh !important;
+    height: calc(100vh - 72px) !important;
+    min-height: calc(100vh - 72px) !important;
     background: #020617 !important;
-    padding: 140px 24px 40px !important; /* Raised padding so links clear your top buttons perfectly */
+    padding: 0 24px 40px !important;
     
     /* Placed just beneath the nav-tools index row layer */
     z-index: 999999 !important; 

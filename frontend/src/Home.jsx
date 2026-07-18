@@ -77,7 +77,6 @@ function Home({ courses }) {
           </p>
           <div className="hero-actions">
             <Link className="button button-primary" to="/courses">View Courses</Link>
-            <Link className="button button-secondary" to="/enroll">Start Enrollment</Link>
           </div>
         </div>
         <div className="hero-image" aria-hidden="true" style={{ width: '100%', height: 'auto', minHeight: '520px', position: 'relative', alignSelf: 'stretch' }}>
