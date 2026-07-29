@@ -29,8 +29,15 @@ a {
 
 button,
 input,
-select {
+select,
+textarea,
+a {
   font: inherit;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  touch-action: manipulation !important;
 }
 
 button {
@@ -219,9 +226,10 @@ html, body {
 }
 
 .color-panel.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+  display: grid !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
 }
 
 .color-swatch {
@@ -970,35 +978,59 @@ html, body {
     padding: 12px 14px;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.45);
-    width: min(240px, calc(100vw - 96px)) !important;
-    min-width: 220px !important;
+    width: min(220px, calc(100vw - 96px)) !important;
+    min-width: 180px !important;
     grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
     grid-auto-flow: row !important;
     gap: 10px !important;
   }
 
   .color-panel.active {
-    display: grid;
+    display: grid !important;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
   }
 
-  .color-panel .panel-close {
-    position: absolute;
-    top: 18px;
-    right: 18px;
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.06);
-    display: grid;
-    place-items: center;
-    color: #fff;
-    font-size: 20px;
-  }
 
   /* Override overly-broad hide rules that might hide buttons */
   button[aria-label="Toggle settings"], .color-toggle, .settings-icon {
     display: inline-grid !important;
+  }
+}
+
+@media (max-width: 960px) {
+  .color-toggle {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 12px !important;
+    padding: 8px !important;
+    transition: transform 0.2s ease, background-color 0.2s ease !important;
+  }
+
+  .color-toggle.open {
+    transform: rotate(5deg) scale(1.05) !important;
+  }
+
+  .color-toggle .settings-icon {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .color-panel {
+    width: min(200px, calc(100vw - 80px)) !important;
+    min-width: 180px !important;
+    padding: 10px 12px !important;
+  }
+
+  .color-panel .panel-close {
+    display: none !important;
+  }
+}
+
+@media (max-width: 960px) {
+  .color-panel .panel-close {
+    display: none !important;
   }
 }
 
@@ -1007,7 +1039,10 @@ html, body {
   height: 24px;
   display: block;
   fill: currentColor;
-  animation: spin 1.4s linear infinite;
+}
+
+.color-toggle.open .settings-icon {
+  animation: spin 1.4s linear infinite !important;
 }
 
 /* Hide overlay close buttons on desktop; show only on mobile via media query */
@@ -1164,21 +1199,36 @@ html, body {
     align-items: center !important;
     width: 46px !important;
     height: 46px !important;
+    min-width: 46px !important;
+    min-height: 46px !important;
     padding: 10px !important;
-    background: var(--button-secondary-bg, rgba(255, 255, 255, 0.08)) !important;
-    border: 1px solid var(--button-secondary-border, rgba(255, 255, 255, 0.12)) !important;
+    background: rgba(255, 255, 255, 0.16) !important;
+    border: 1px solid rgba(255, 255, 255, 0.28) !important;
     border-radius: 14px !important;
     z-index: 10025 !important;
+    color: #ffffff !important;
+  }
+
+  .site-header .hamburger:hover {
+    background: rgba(255, 255, 255, 0.25) !important;
+  }
+
+  .site-header .hamburger span {
+    width: 22px !important;
+    height: 3px !important;
+    background: #ffffff !important;
+    border-radius: 3px !important;
   }
 
   .site-header .nav-links {
     position: fixed !important;
     top: 0 !important;
-    right: -100% !important;
+    right: 0 !important;
     left: auto !important;
     bottom: 0 !important;
     width: min(84vw, 340px) !important;
     max-width: 100vw !important;
+    min-width: 280px !important;
     margin: 0 !important;
     padding: 24px 16px 16px !important;
     background: rgba(2, 6, 23, 0.98) !important;
@@ -1191,8 +1241,9 @@ html, body {
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
-    transform: none !important;
-    transition: right 0.28s ease, opacity 0.28s ease !important;
+    transform: translateX(100%) !important;
+    transition: transform 0.28s ease, opacity 0.28s ease, visibility 0.28s ease !important;
+    overflow: hidden !important;
   }
 
   .site-header .nav-links.open {
@@ -1200,7 +1251,42 @@ html, body {
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
-    transform: none !important;
+    transform: translateX(0) !important;
+    display: flex !important;
+  }
+
+  .site-header .nav-links.open .nav-panel {
+    min-height: 100% !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .site-header .nav-links .nav-panel {
+    min-height: 100% !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    padding-top: 80px !important;
+  }
+
+  .site-header .nav-links.open .nav-panel {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .site-header .nav-links .nav-panel {
+    min-height: 100% !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .site-header .nav-links {
+    touch-action: manipulation !important;
+    display: flex !important;
+  }
+
+  .site-header .nav-links .nav-panel {
+    display: flex !important;
+    visibility: visible !important;
   }
 
   .site-header .nav-links .nav-close {
@@ -1220,6 +1306,13 @@ html, body {
     height: 100% !important;
     min-height: 100% !important;
     overflow-y: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .site-header .nav-links.open .nav-panel {
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   .site-header .nav-links .nav-link,
@@ -1232,13 +1325,35 @@ html, body {
     text-align: left !important;
     background: transparent !important;
     border: none !important;
-    color: var(--text-color) !important;
+    color: #cfe6ff !important;
+    display: block !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    touch-action: manipulation !important;
   }
 
   .site-header .nav-links .nav-link:hover,
   .site-header .nav-links.open .nav-link:hover {
     color: #ffffff !important;
     background: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .site-header .nav-links,
+  .site-header .nav-links.open,
+  .site-header .nav-links .nav-panel,
+  .site-header .nav-links .nav-panel *,
+  .site-header .nav-close,
+  .site-header .hamburger,
+  .site-header .color-toggle,
+  .site-header .color-panel,
+  .site-header .panel-close,
+  .site-header .nav-link {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    touch-action: manipulation !important;
   }
 
   .site-header .nav-link.enroll-button {
@@ -1507,6 +1622,72 @@ html, body {
     flex-wrap: wrap !important;
     gap: 12px !important;
     margin-top: 16px !important;
+  }
+
+  /* Final forced mobile nav fix */
+  @media (max-width: 640px) {
+    .site-header .hamburger {
+      display: flex !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      position: relative !important;
+      z-index: 10030 !important;
+    }
+
+    .site-header .hamburger span {
+      background: #ffffff !important;
+    }
+
+    .site-header .nav-links {
+      display: flex !important;
+      position: fixed !important;
+      top: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100vw !important;
+      max-width: 100vw !important;
+      height: 100vh !important;
+      margin: 0 !important;
+      padding: 24px 16px 16px !important;
+      background: rgba(2, 6, 23, 0.98) !important;
+      z-index: 10020 !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: translateX(100%) !important;
+      transition: transform 0.28s ease, opacity 0.28s ease, visibility 0.28s ease !important;
+      overflow: hidden !important;
+    }
+
+    .site-header .nav-links.open {
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      transform: translateX(0) !important;
+      display: flex !important;
+    }
+
+    .site-header .nav-links .nav-panel {
+      display: flex !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      min-height: 100% !important;
+      padding-top: 80px !important;
+    }
+
+    .site-header .nav-links .nav-close {
+      display: grid !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      z-index: 10031 !important;
+    }
+
+    .site-header .nav-links .nav-link {
+      display: block !important;
+      width: 100% !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
   }
 
 }

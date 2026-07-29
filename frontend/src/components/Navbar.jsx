@@ -75,9 +75,13 @@ function Navbar({ accentColor, currentThemeId, colors, onColorChange, theme }) {
         />
       </Link>
 
-      <nav className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
-        <button className="nav-close" aria-label="Close menu" onClick={() => setIsMenuOpen(false)}>×</button>
-        <div className="nav-panel" ref={menuRef}>
+      <nav
+        className={`nav-links ${isMenuOpen ? 'open' : ''}`}
+        ref={menuRef}
+        onTouchStart={(e) => e.stopPropagation()}
+      >
+        <button type="button" className="nav-close" aria-label="Close menu" onClick={() => setIsMenuOpen(false)}>×</button>
+        <div className="nav-panel">
           {links.map(link => (
             <NavLink
               key={link.to}
@@ -95,9 +99,12 @@ function Navbar({ accentColor, currentThemeId, colors, onColorChange, theme }) {
       <div className="nav-tools">
         {/* The Hamburger Menu button sits cleanly on top */}
         <button
+          type="button"
           className={`hamburger ${isMenuOpen ? 'open' : ''}`}
           aria-label="Toggle navigation menu"
-          onClick={() => {
+          aria-expanded={isMenuOpen}
+          onClick={(e) => {
+            e.stopPropagation();
             setIsMenuOpen((p) => {
               const next = !p;
               if (next) setIsColorOpen(false);
@@ -114,7 +121,11 @@ function Navbar({ accentColor, currentThemeId, colors, onColorChange, theme }) {
         <button
           type="button"
           className={`color-toggle ${isColorOpen ? 'open' : ''}`}
-          onClick={() => {
+          onTouchStart={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
             setIsColorOpen((p) => {
               const next = !p;
               if (next) setIsMenuOpen(false);
@@ -135,14 +146,14 @@ function Navbar({ accentColor, currentThemeId, colors, onColorChange, theme }) {
           </svg>
         </button>
 
-        <div ref={colorRef} className={`color-panel ${isColorOpen ? 'active' : ''}`}>
-          <button
-            className="panel-close"
-            aria-label="Close color panel"
-            onClick={() => setIsColorOpen(false)}
-          >
-            ×
-          </button>
+        <div
+          ref={colorRef}
+          className={`color-panel ${isColorOpen ? 'active' : ''}`}
+          onTouchStart={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
+        >
           {colors.map((color) => (
             <button
               key={color.id}
