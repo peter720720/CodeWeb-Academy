@@ -79,6 +79,7 @@ function Navbar({ accentColor, currentThemeId, colors, onColorChange, theme }) {
       </Link>
 
       <nav className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
+        <button className="nav-close" aria-label="Close menu" onClick={() => setIsMenuOpen(false)}>×</button>
         <div className="nav-panel" ref={menuRef}>
           {links.map(link => (
             <NavLink
@@ -99,7 +100,13 @@ function Navbar({ accentColor, currentThemeId, colors, onColorChange, theme }) {
         <button
           className={`hamburger ${isMenuOpen ? 'open' : ''}`}
           aria-label="Toggle navigation menu"
-          onClick={() => setIsMenuOpen((p) => !p)}
+          onClick={() => {
+            setIsMenuOpen((p) => {
+              const next = !p;
+              if (next) setIsColorOpen(false);
+              return next;
+            });
+          }}
         >
           <span />
           <span />
@@ -110,20 +117,35 @@ function Navbar({ accentColor, currentThemeId, colors, onColorChange, theme }) {
         <button
           type="button"
           className={`color-toggle ${isColorOpen ? 'open' : ''}`}
-          onClick={() => setIsColorOpen((prev) => !prev)}
+          onClick={() => {
+            setIsColorOpen((p) => {
+              const next = !p;
+              if (next) setIsMenuOpen(false);
+              return next;
+            });
+          }}
           aria-expanded={isColorOpen}
           aria-label="Toggle settings"
         >
           <svg
-            viewBox="0 0 24 24"
+            viewBox="0 0 512 512"
             className="settings-icon"
             aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
           >
-            <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm8.43-1.22a1 1 0 0 0 .09-1.16l-1.18-2.05a.99.99 0 0 0-.92-.52l-2.37.09a7.16 7.16 0 0 0-1.34-.78l-.36-2.4a1 1 0 0 0-.98-.86h-2.36a1 1 0 0 0-.98.86l-.36 2.4a7.16 7.16 0 0 0-1.34.78l-2.37-.09a.99.99 0 0 0-.92.52L3.48 13.12a1 1 0 0 0 .09 1.16l1.83 2.15a.98.98 0 0 0 .9.38l2.37-.38c.4.34.84.61 1.34.78l.36 2.4a1 1 0 0 0 .98.86h2.36a1 1 0 0 0 .98-.86l.36-2.4c.5-.17.94-.44 1.34-.78l2.37.38a.98.98 0 0 0 .9-.38l1.83-2.15Z" />
+            <path d="M487.4 315.7l-42.9-24.8c2.6-13.5 2.6-27.6 0-41.1l42.9-24.8c18.7-10.8 25-35.1 14.2-53.8l-29.6-51.4c-10.8-18.7-35.1-25-53.8-14.2l-42.9 24.8c-22.6-18.3-49.6-32-79.4-40.2V24.6C328.9 11 318 0 304.4 0h-59c-13.6 0-24.5 11-24.5 24.6v49.7c-29.8 8.3-56.8 21.9-79.4 40.2L98.6 90.1C79.9 79.3 55.6 85.6 44.8 104.3L15.2 155.7C4.4 174.4 10.7 198.7 29.4 209.5l42.9 24.8c-2.6 13.5-2.6 27.6 0 41.1l-42.9 24.8C10.7 336.3 4.4 360.6 15.2 379.3l29.6 51.4c10.8 18.7 35.1 25 53.8 14.2l42.9-24.8c22.6 18.3 49.6 32 79.4 40.2v49.7C220.9 501 231.8 512 245.4 512h59c13.6 0 24.5-11 24.5-24.6v-49.7c29.8-8.3 56.8-21.9 79.4-40.2l42.9 24.8c18.7 10.8 43 4.5 53.8-14.2l29.6-51.4c10.8-18.7 4.5-43-14.2-53.8zM256 352c-52.9 0-96-43.1-96-96s43.1-96 96-96 96 43.1 96 96-43.1 96-96 96z" />
           </svg>
         </button>
 
         <div ref={colorRef} className={`color-panel ${isColorOpen ? 'active' : ''}`}>
+          <button
+            className="panel-close"
+            aria-label="Close color panel"
+            onClick={() => setIsColorOpen(false)}
+          >
+            ×
+          </button>
           {colors.map((color) => (
             <button
               key={color.id}
