@@ -17,16 +17,12 @@ function Navbar({ accentColor, currentThemeId, colors, onColorChange, theme }) {
 
   useEffect(() => {
     function handleOutside(e) {
-      // 1. MODIFIED VALIDATION: Disables outside-clicking closure on mobile viewports
-      const isMobileView = window.innerWidth <= 960;
-      
-      if (!isMobileView) {
-        if (isMenuOpen && menuRef.current && !menuRef.current.contains(e.target)) {
-          setIsMenuOpen(false);
-        }
-        if (isColorOpen && colorRef.current && !colorRef.current.contains(e.target)) {
-          setIsColorOpen(false);
-        }
+      // Close overlays when clicking outside of their panels
+      if (isMenuOpen && menuRef.current && !menuRef.current.contains(e.target)) {
+        setIsMenuOpen(false);
+      }
+      if (isColorOpen && colorRef.current && !colorRef.current.contains(e.target)) {
+        setIsColorOpen(false);
       }
     }
 
@@ -41,7 +37,8 @@ function Navbar({ accentColor, currentThemeId, colors, onColorChange, theme }) {
     document.addEventListener('touchstart', handleOutside);
     document.addEventListener('keydown', handleEsc);
 
-    if (isMenuOpen) {
+    // Prevent page scroll when either overlay is open
+    if (isMenuOpen || isColorOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
