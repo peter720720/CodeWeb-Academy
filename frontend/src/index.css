@@ -895,12 +895,23 @@ html, body {
 @media (max-width: 768px) {
   /* 1. Hides the 'X' / close toggle button completely */
   .code-web-academy-menu-toggle, 
-  button[aria-label*="close"], 
-  button:has(> svg),
+  button[aria-label*="close"]:not([aria-label="Toggle settings"]), 
+  button:has(> svg):not([aria-label="Toggle settings"]),
   .X,
   .close-btn,
   div:has(> .X) { 
     display: none !important; 
+  }
+
+  /* Keep the actual mobile menu/close buttons and the settings toggle visible */
+  .site-header .nav-links .nav-close,
+  .color-panel .panel-close,
+  button[aria-label="Toggle settings"],
+  .color-toggle,
+  .settings-icon {
+    display: inline-grid !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 
   /* 2. Forces the menu container to animate from the top */
