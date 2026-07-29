@@ -259,6 +259,11 @@ html, body {
   padding-top: 14px;
 }
 
+.hero-copy {
+  width: 100%;
+  max-width: 720px;
+}
+
 .hero-copy .eyebrow,
 .section-title .eyebrow,
 .course-tag {
@@ -313,6 +318,42 @@ html, body {
   flex: 1 1 200px;
 }
 
+@media (max-width: 960px) {
+  .hero-panel {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    text-align: center;
+  }
+
+  .hero-copy {
+    justify-self: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-copy h1,
+  .hero-copy p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .course-intro {
+    grid-template-columns: 1fr;
+    text-align: center;
+    justify-items: center;
+  }
+
+  .course-intro > div {
+    width: 100%;
+  }
+
+  .course-intro a.button {
+    justify-self: center;
+    margin: 0 auto;
+  }
+}
+
 @media (max-width: 640px) {
   .hero-actions {
     flex-direction: column;
@@ -352,19 +393,29 @@ html, body {
 }
 
 .course-intro {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
   gap: 24px;
-  align-items: center;
-  padding: 42px 0;
+  padding: 42px;
   background: var(--panel-bg, rgba(255, 255, 255, 0.03));
   border: 1px dashed var(--panel-border, rgba(255, 255, 255, 0.08));
   border-radius: 24px;
 }
 
+.course-intro > div {
+  max-width: 720px;
+}
+
 .course-intro h2 {
   margin: 0;
   font-size: clamp(1.8rem, 2.4vw, 2.8rem);
+  
+}
+
+.course-intro a.button {
+  justify-self: start;
+  align-self: start;
 }
 
 .course-intro p {
