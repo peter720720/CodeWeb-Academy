@@ -188,7 +188,7 @@ html, body {
   transform: translateY(-1px);
 }
 
-.color-toggle-icon {
+..color-toggle-icon {
   width: 100%;
   height: 100%;
   display: block;
@@ -200,7 +200,8 @@ html, body {
   position: absolute;
   top: 64px;
   right: 0;
-  width: 190px;
+  width: 230px;
+  min-width: 230px;
   padding: 16px;
   background: var(--panel-bg, rgba(10, 14, 30, 0.92));
   border: 1px solid var(--panel-border, rgba(255, 255, 255, 0.1));
@@ -211,9 +212,10 @@ html, body {
   transform: translateY(-12px);
   transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-auto-flow: row;
+  justify-items: center;
   gap: 10px;
-  z-index: 80;
 }
 
 .color-panel.active {
@@ -808,6 +810,11 @@ html, body {
     padding: 12px 14px;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    width: min(240px, calc(100vw - 96px)) !important;
+    min-width: 220px !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    grid-auto-flow: row !important;
+    gap: 10px !important;
   }
 
   .color-panel.active {
@@ -1027,10 +1034,11 @@ html, body {
     align-items: stretch !important;
     gap: 12px !important;
     width: 100% !important;
-    padding: 80px 0 0 !important;
+    padding: 92px 0 0 !important;
     margin: 0 !important;
     background: transparent !important;
     height: 100% !important;
+    min-height: 100% !important;
     overflow-y: auto !important;
   }
 
