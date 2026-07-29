@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './Home';
 import Courses from './Courses';
@@ -86,7 +86,7 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className={`app-shell ${theme === 'dark' ? 'dark-theme' : 'white-theme'}`}>
         {/* Pass your live active theme state value right here */}
         <Navbar 
@@ -108,7 +108,7 @@ function App() {
         </main>
         <Footer />
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
