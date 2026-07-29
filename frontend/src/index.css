@@ -320,9 +320,22 @@ html, body {
 
 @media (max-width: 960px) {
   .hero-panel {
+    width: 100% !important;
     grid-template-columns: 1fr;
     gap: 24px;
     text-align: center;
+  }
+
+  .hero-image-frame,
+  .hero-image-block,
+  .hero-image {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  .hero-image-frame {
+    min-height: 280px !important;
   }
 
   .hero-copy {
@@ -761,25 +774,55 @@ html, body {
     gap: 24px !important;
     padding: 24px !important;
     min-height: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .carousel-copy,
   .carousel-image {
     width: 100% !important;
+    max-width: 100% !important;
   }
 
   .carousel-image {
     min-height: 260px !important;
-    max-height: 420px !important;
+    max-height: none !important;
     border-radius: 24px !important;
+    object-fit: cover !important;
   }
 
   .hero-panel {
     gap: 24px;
   }
 
+  .hero-image,
+  .hero-image-frame,
+  .carousel-image {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  .hero-image {
+    min-height: auto !important;
+    height: auto !important;
+  }
+
   .hero-image-frame {
-    min-height: 340px;
+    min-height: 300px !important;
+    width: 100% !important;
+  }
+
+  .hero-image-frame img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .carousel-image {
+    min-height: 260px !important;
+    max-height: none !important;
+    border-radius: 24px !important;
   }
 
   .course-grid,
@@ -788,6 +831,25 @@ html, body {
   .career-grid,
   .footer-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* Force full-width content blocks on mobile */
+  .home-page,
+  .section-block,
+  .hero-panel,
+  .carousel-panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .hero-panel,
+  .carousel-panel {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 }
 
