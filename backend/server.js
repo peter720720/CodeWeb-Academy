@@ -30,14 +30,14 @@ dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 // 🔑 SERVER CONFIGURATION (Using workspace .env values with safe defaults)
 // =========================================================================
 const PORT = Number(process.env.PORT) || 3500;
-const JWT_SECRET = process.env.JWT_SECRET || '7d9a7493be32f7200aad8ddb829719d09c2dd2e43beb95ba8a2d98ba71afc082';
-const MONGO_URL = process.env.MONGO_URL || 'mongodb+srv://oyinloyepeter273_db_user:MRWRi3C4xA5wzHaJ@cluster0.kp6khjh.mongodb.net/codeweb_db?retryWrites=true&w=majority';
+const JWT_SECRET = process.env.JWT_SECRET;
+const MONGO_URL = process.env.MONGO_URL;
 
-const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_2BtxTDqP_KvzFAyUW75ESVr3qngB8YFne';
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const EMAIL_FROM_NAME = process.env.EMAIL_FROM_NAME || 'CodeWeb Academy';
 
-const NODEMAILER_USERNAME = process.env.NODEMAILER_USERNAME || 'oyinloyepeter273@gmail.com';
-const NODEMAILER_PASSWORD = process.env.NODEMAILER_PASSWORD || 'iktg agtu kpxd wzoh';
+const NODEMAILER_USERNAME = process.env.NODEMAILER_USERNAME;
+const NODEMAILER_PASSWORD = process.env.NODEMAILER_PASSWORD;
 
 const app = express();
 
@@ -55,7 +55,7 @@ const transporter = nodemailer.createTransport({
 
 // Middleware Configuration
 // Allow frontend origin to be configured via environment for deployments (Render, Vercel, etc.)
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+const FRONTEND_URL = process.env.CLIENT_URL || process.env.FRONTEND_URL || 'http://localhost:5173';
 app.use(cors({ origin: FRONTEND_URL, credentials: true }));
 app.use(express.json());
 
