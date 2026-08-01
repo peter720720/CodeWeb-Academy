@@ -62,3 +62,25 @@ export async function login(req, res) {
     res.status(500).json({ message: 'Internal server login error.' });
   }
 }
+
+export async function validate(req, res) {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    res.status(200).json({
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        role: user.role,
+        selectedCourse: user.selectedCourse
+      }
+    });
+  } catch (error) {
+    console.error('Validate error:', error);
+    res.status(500).json({ message: 'Internal server validation error.' });
+  }
+}

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
-function Navbar({ accentColor, currentThemeId, colors, onColorChange, theme }) {
+function Navbar({ user, accentColor, currentThemeId, colors, onColorChange, theme }) {
   const [isColorOpen, setIsColorOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
@@ -10,9 +10,10 @@ function Navbar({ accentColor, currentThemeId, colors, onColorChange, theme }) {
     { to: '/', label: 'Home' },
     { to: '/about', label: 'About' },
     { to: '/courses', label: 'Courses' },
+    ...(user && user.selectedCourse ? [{ to: `/track/${user.selectedCourse}`, label: 'Track' }] : []),
     { to: '/opportunities', label: 'Opportunities' },
     { to: '/contact', label: 'Contact' },
-    { to: '/enroll', label: 'Enroll Now' }
+    ...(!user ? [{ to: '/enroll', label: 'Enroll Now' }] : [])
   ];
 
   useEffect(() => {

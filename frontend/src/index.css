@@ -1039,6 +1039,7 @@ html, body {
   height: 24px;
   display: block;
   fill: currentColor;
+  animation: spin 1.4s linear infinite;
 }
 
 .color-toggle.open .settings-icon {

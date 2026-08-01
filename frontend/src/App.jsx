@@ -4,6 +4,9 @@ import Navbar from './components/Navbar';
 import Home from './Home';
 import Courses from './Courses';
 import Enroll from './Enroll';
+import Login from './Login';
+import CourseDetail from './CourseDetail';
+import Contact from './Contact';
 import About from './About';
 import Opportunities from './Opportunities';
 import Footer from './Footer';
@@ -33,12 +36,36 @@ const colorOptions = [
 
 function App() {
   const [courses] = useState(defaultCourses);
+  const [user, setUser] = useState(null);
   const [accentColor, setAccentColor] = useState(colorOptions[0].value);
   const [currentThemeId, setCurrentThemeId] = useState(colorOptions[0].id);
   const [theme, setTheme] = useState('dark');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const token = localStorage.getItem('codewebToken');
+    if (token) {
+      const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3500';
+      fetch(`${API_BASE}/api/auth/validate`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(async (response) => {
+          if (!response.ok) {
+            localStorage.removeItem('codewebToken');
+            setUser(null);
+            return;
+          }
+          const result = await response.json();
+          setUser(result.user);
+        })
+        .catch(() => {
+          localStorage.removeItem('codewebToken');
+          setUser(null);
+        });
+    }
+
     document.documentElement.style.setProperty('--accent-color', accentColor);
     
     function lightenHex(hex, percent) {
@@ -90,6 +117,7 @@ function App() {
       <div className={`app-shell ${theme === 'dark' ? 'dark-theme' : 'white-theme'}`}>
         {/* Pass your live active theme state value right here */}
         <Navbar 
+          user={user}
           accentColor={accentColor} 
           currentThemeId={currentThemeId} 
           colors={colorOptions} 
@@ -102,7 +130,13 @@ function App() {
             <Route path="/about" element={<About />} /> 
             <Route path="/courses" element={<Courses courses={courses} accentColor={accentColor} />} />
             <Route path="/enroll" element={<Enroll courses={courses} accentColor={accentColor} />} />
+            <Route path="/login" element={<Login courses={courses} onLogin={({ user, token }) => {
+              setUser(user);
+              localStorage.setItem('codewebToken', token);
+            }} />} />
+            <Route path="/track/:id" element={<CourseDetail courses={courses} user={user} />} />
             <Route path="/opportunities" element={<Opportunities accentColor={accentColor} />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<Home courses={courses} accentColor={accentColor} />} />
           </Routes>
         </main>

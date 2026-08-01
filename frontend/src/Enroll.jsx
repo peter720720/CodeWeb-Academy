@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Enroll({ courses }) {
   // Default the initial state value to 'none'
-  const [form, setForm] = useState({ fullName: '', email: '', course: 'none' });
+  const navigate = useNavigate();
+  const [form, setForm] = useState({ fullName: '', email: '', password: '', course: 'none' });
   const [status, setStatus] = useState(null);
 
   const handleChange = (event) => {
@@ -22,12 +24,19 @@ function Enroll({ courses }) {
         body: JSON.stringify({
           fullName: form.fullName,
           email: form.email,
-          courseId: form.course // Sends 'none' or the selected course ID to your backend
+          password: form.password,
+          selectedCourse: form.course // Sends 'none' or the selected course ID to your backend
         })
       });
 
       const result = await response.json();
-      setStatus(response.ok ? 'success' : result.message || 'Something went wrong.');
+      if (response.ok) {
+        setStatus('Signup successful! Redirecting to login...');
+        setTimeout(() => navigate('/login'), 1200);
+        return;
+      }
+
+      setStatus(result.message || 'Something went wrong.');
     } catch (error) {
       setStatus('Network failed. Please check the backend or your connection.');
     }
@@ -42,18 +51,20 @@ function Enroll({ courses }) {
       </div>
 
       <form className="enroll-form" onSubmit={handleSubmit}>
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
-          <span style={{ fontWeight: '600' }}>Full Name</span>
-          <input 
-            type="text"
-            name="fullName" 
-            placeholder="Type your first and last name here"
-            value={form.fullName} 
-            onChange={handleChange} 
-            required 
-            style={{ padding: '14px', borderRadius: '12px', border: '1px solid var(--input-border)' }}
-          />
-        </label>
+        <div style={{ marginBottom: '24px' }}>
+          <label style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <span style={{ fontWeight: '600' }}>Full Name</span>
+            <input 
+              type="text"
+              name="fullName" 
+              placeholder="Type your first and last name here"
+              value={form.fullName} 
+              onChange={handleChange} 
+              required 
+              style={{ padding: '14px', borderRadius: '12px', border: '1px solid var(--input-border)' }}
+            />
+          </label>
+        </div>
 
         <label style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
           <span style={{ fontWeight: '600' }}>Email Address</span>
@@ -68,7 +79,20 @@ function Enroll({ courses }) {
           />
         </label>
 
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '24px' }}>
+        <label style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
+          <span style={{ fontWeight: '600' }}>Password</span>
+          <input
+            type="password"
+            name="password"
+            placeholder="Create a secure password"
+            value={form.password}
+            onChange={handleChange}
+            required
+            style={{ padding: '14px', borderRadius: '12px', border: '1px solid var(--input-border)' }}
+          />
+        </label>
+
+        <label style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
           <span style={{ fontWeight: '600' }}>Select Course</span>
           <select 
             name="course" 
@@ -83,6 +107,10 @@ function Enroll({ courses }) {
             ))}
           </select>
         </label>
+
+        <p style={{ margin: '0 0 24px 0', color: 'var(--muted-color)', fontSize: '0.95rem' }}>
+          Already have an account? <a href="#/login" style={{ color: 'var(--accent-color)', fontWeight: 700 }}>Login</a>
+        </p>
 
         <button className="button button-primary" type="submit" style={{ width: '100%', padding: '14px' }}>
           Submit Enrollment
