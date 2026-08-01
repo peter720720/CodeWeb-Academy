@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import { getApiBase } from './api';
 import Home from './Home';
 import Courses from './Courses';
 import Enroll from './Enroll';
@@ -45,7 +46,7 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('codewebToken');
     if (token) {
-      const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3500';
+      const API_BASE = getApiBase();
       fetch(`${API_BASE}/api/auth/validate`, {
         headers: {
           Authorization: `Bearer ${token}`

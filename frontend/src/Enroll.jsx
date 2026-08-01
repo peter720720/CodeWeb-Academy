@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getApiBase } from './api';
 
 function Enroll({ courses }) {
   // Default the initial state value to 'none'
@@ -17,7 +18,7 @@ function Enroll({ courses }) {
     setStatus('submitting');
 
     try {
-      const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3500';
+      const API_BASE = getApiBase();
       const response = await fetch(`${API_BASE}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getApiBase } from './api';
 
 function Login({ onLogin }) {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ function Login({ onLogin }) {
     setStatus('submitting');
 
     try {
-      const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3500';
+      const API_BASE = getApiBase();
       const response = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
