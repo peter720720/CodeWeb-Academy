@@ -54,17 +54,12 @@ const transporter = nodemailer.createTransport({
 });
 
 // Middleware Configuration
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://code-web-academy.vercel.app',
-  'https://codeweb-academy.onrender.com'
-];
-
 app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (origin && allowedOrigins.includes(origin)) {
+  const origin = req.headers.origin || req.get('Origin');
+  if (origin) {
     res.setHeader('Access-Control-Allow-Origin', origin);
-  } else if (!origin) {
+    res.setHeader('Vary', 'Origin');
+  } else {
     res.setHeader('Access-Control-Allow-Origin', '*');
   }
   res.setHeader('Access-Control-Allow-Credentials', 'true');
