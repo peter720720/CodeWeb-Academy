@@ -1,0 +1,38 @@
+[
+  {
+    "id": "74b12047-e52d-4ceb-bb73-522131442d17",
+    "fullName": "Peter Akorede (Admin)",
+    "email": "oyinloyepeter273@gmail.com",
+    "password": "$2a$10$2tfyYA8ecn5MRKcq70Nr1ewmLwSgdHyq97y5iYy1eRL0i9iNc4cIG",
+    "role": "admin",
+    "selectedCourse": "all",
+    "createdAt": "2026-08-01T02:48:06.678Z"
+  },
+  {
+    "id": "b3880fd4-390a-4fa8-a81b-30dc2c93091f",
+    "fullName": "Peter Akorede (Admin)",
+    "email": "oyinloyepeter273@gmail.com",
+    "password": "$2a$10$0lfjiW/lNZWotJcQirjZDO6ggtzPK0pKRk5ab21qZcmzsJIycEZdO",
+    "role": "admin",
+    "selectedCourse": "all",
+    "createdAt": "2026-08-01T02:48:06.728Z"
+  },
+  {
+    "id": "b0fb609a-a4fc-438e-8d40-ce9378b98681",
+    "fullName": "Peter Akorede (Admin)",
+    "email": "oyinloyepeter273@gmail.com",
+    "password": "$2a$10$D3btPQ1IF5axaaieBDtn..dONdgl7zHui9cinpd.aom4CfWyvZetK",
+    "role": "admin",
+    "selectedCourse": "all",
+    "createdAt": "2026-08-01T02:48:06.791Z"
+  },
+  {
+    "id": "74df52f2-337f-4af8-ba3e-34be8c9c9258",
+    "fullName": "Aramide Akorede",
+    "email": "peterakorede273@gmail.com",
+    "password": "$2a$10$HhOZZTwlaN01fXeOHyLEiOv6UDZY8nHtlsL5AuEVQ1yh1wKkxYL3q",
+    "role": "student",
+    "selectedCourse": "data",
+    "createdAt": "2026-08-01T02:59:15.456Z"
+  }
+]

@@ -20,6 +20,7 @@ import { fileURLToPath } from 'url';
 import authRoutes from './routes/authRoutes.js';
 import coursesRoutes from './routes/coursesRoutes.js';
 import User from './models/User.js';
+import { findUserByEmail, createUser as createLocalUser } from './data/userStore.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -78,6 +79,27 @@ const COURSES = [
 // ==========================================
 // 🚀 DATABASE CONNECTION & ADMIN SEEDING
 // ==========================================
+async function ensureLocalFallbackAdmin() {
+  try {
+    const adminEmail = 'oyinloyepeter273@gmail.com';
+    const adminExists = await findUserByEmail(adminEmail);
+    if (!adminExists) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash('iktg agtu kpxd wzoh', salt);
+      await createLocalUser({
+        fullName: 'Peter Akorede (Admin)',
+        email: adminEmail,
+        password: hashedPassword,
+        role: 'admin',
+        selectedCourse: 'all'
+      });
+      console.log('👑 Local admin fallback user created.');
+    }
+  } catch (err) {
+    console.error('❌ Local fallback admin seed failed:', err.message);
+  }
+}
+
 const connectToDatabase = async () => {
   try {
     await mongoose.connect(MONGO_URL, {
@@ -87,16 +109,26 @@ const connectToDatabase = async () => {
       maxPoolSize: 10
     });
 
-    console.log('🍃 Connected to MongoDB Atlas successfully.');
+    console.log('🍃 Connected to MongoDB successfully.');
     await seedAdminUser();
+    return true;
   } catch (err) {
     console.error('❌ Database connection failure:', err.message);
-    console.log('⏳ Retrying MongoDB connection in 5 seconds...');
-    setTimeout(connectToDatabase, 5000);
+    if (err.code) {
+      console.error('   MongoDB error code:', err.code);
+    }
+    console.error(`   Tried to connect to: ${MONGO_URL}`);
+    console.log('⏳ Using local fallback data store until MongoDB is available.');
+    return false;
   }
 };
 
-connectToDatabase();
+(async () => {
+  const dbConnected = await connectToDatabase();
+  if (!dbConnected) {
+    await ensureLocalFallbackAdmin();
+  }
+})();
 
 // Automated Seeding Routine
 async function seedAdminUser() {
