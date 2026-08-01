@@ -1,5 +1,4 @@
 import express from 'express';
-import cors from 'cors';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 let Resend;
@@ -55,15 +54,33 @@ const transporter = nodemailer.createTransport({
 });
 
 // Middleware Configuration
-// Allow all origins and reflect the request origin in CORS responses.
-// This is the simplest fix for deployed frontend/backends that may not have matching env vars.
-const corsOptions = {
-  origin: true,
-  credentials: true
-};
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://code-web-academy.vercel.app',
+  'https://codeweb-academy.onrender.com'
+];
 
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } else if (!origin) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
+  res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS, POST, PUT, PATCH, DELETE');
+
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
+
 app.use(express.json());
 
 // Mount API routes
