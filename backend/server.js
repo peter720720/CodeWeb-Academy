@@ -30,14 +30,14 @@ dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 // 🔑 SERVER CONFIGURATION (Using workspace .env values with safe defaults)
 // =========================================================================
 const PORT = Number(process.env.PORT) || 3500;
-const JWT_SECRET = process.env.JWT_SECRET;
-const MONGO_URL = process.env.MONGO_URL;
+const JWT_SECRET = process.env.JWT_SECRET || 'development-secret';
+const MONGO_URL = process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/codeweb_db';
 
-const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 const EMAIL_FROM_NAME = process.env.EMAIL_FROM_NAME || 'CodeWeb Academy';
 
-const NODEMAILER_USERNAME = process.env.NODEMAILER_USERNAME;
-const NODEMAILER_PASSWORD = process.env.NODEMAILER_PASSWORD;
+const NODEMAILER_USERNAME = process.env.NODEMAILER_USERNAME || '';
+const NODEMAILER_PASSWORD = process.env.NODEMAILER_PASSWORD || '';
 
 const app = express();
 
@@ -137,6 +137,14 @@ async function seedAdminUser() {
     res.status(200).json({ status: 'ok', uptime: process.uptime(), env: process.env.NODE_ENV || 'production' });
   });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`🚀 CodeWeb Backend running on: http://localhost:${PORT}`);
+});
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`❌ Port ${PORT} is already in use. Stop the existing backend process or set PORT to a different value.`);
+  } else {
+    console.error('❌ Server error:', err);
+  }
 });
