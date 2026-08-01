@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
-function Navbar({ user, accentColor, currentThemeId, colors, onColorChange, theme }) {
+function Navbar({ user, accentColor, currentThemeId, colors, onColorChange, onLogout, theme }) {
   const [isColorOpen, setIsColorOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
@@ -119,6 +119,20 @@ function Navbar({ user, accentColor, currentThemeId, colors, onColorChange, them
         </button>
 
         {/* The Theme Spinning wheel is stacked directly underneath */}
+        {user && (
+          <button
+            type="button"
+            className="nav-link logout-button"
+            onClick={() => {
+              setIsMenuOpen(false);
+              onLogout();
+            }}
+            style={{ marginRight: '10px', padding: '10px 16px', borderRadius: '999px', background: 'transparent', border: '1px solid var(--accent-color)', color: 'var(--accent-color)', cursor: 'pointer' }}
+          >
+            Logout
+          </button>
+        )}
+
         <button
           type="button"
           className={`color-toggle ${isColorOpen ? 'open' : ''}`}

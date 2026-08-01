@@ -34,5 +34,14 @@
     "role": "student",
     "selectedCourse": "data",
     "createdAt": "2026-08-01T02:59:15.456Z"
+  },
+  {
+    "id": "55ec6342-17b3-48ee-8d68-e5eaddea5c49",
+    "fullName": "Aramide Akorede",
+    "email": "pelumiaramide@2003",
+    "password": "$2a$10$xZNLt4IjoQ.aJPLZp1GfcOz4ZmL4vqa76VY5ezS4P4BtoiHECLeNm",
+    "role": "student",
+    "selectedCourse": "graphics",
+    "createdAt": "2026-08-01T11:38:08.071Z"
   }
 ]

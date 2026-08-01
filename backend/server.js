@@ -32,6 +32,15 @@ dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 const PORT = Number(process.env.PORT) || 3500;
 const JWT_SECRET = process.env.JWT_SECRET || 'development-secret';
 const MONGO_URL = process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/codeweb_db';
+const useLocalFallback = process.env.USE_LOCAL_FALLBACK === 'true';
+
+if (!process.env.MONGO_URL && !useLocalFallback) {
+  console.warn('⚠️ MONGO_URL is not set and local fallback is disabled.');
+  console.warn('   Add MONGO_URL to codeweb-platform/.env to connect to MongoDB Atlas, or set USE_LOCAL_FALLBACK=true to use local file fallback.');
+} else if (!process.env.MONGO_URL && useLocalFallback) {
+  console.warn('⚠️ MONGO_URL is not set. Backend will use local fallback storage.');
+  console.warn('   To persist users in Atlas, add MONGO_URL to codeweb-platform/.env');
+}
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 const EMAIL_FROM_NAME = process.env.EMAIL_FROM_NAME || 'CodeWeb Academy';

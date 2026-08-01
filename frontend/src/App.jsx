@@ -109,6 +109,11 @@ function App() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('codewebToken');
+    setUser(null);
+  };
+
   if (loading) {
     return <Loader />;
   }
@@ -123,6 +128,7 @@ function App() {
           currentThemeId={currentThemeId} 
           colors={colorOptions} 
           onColorChange={handleColorChange} 
+          onLogout={handleLogout}
           theme={theme} 
         />
         <main className="page-content">

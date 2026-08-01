@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 import User from '../models/User.js';
 import { findUserByEmail, findUserById, createUser as createLocalUser } from '../data/userStore.js';
 
@@ -9,28 +10,56 @@ function getUserId(user) {
   return user._id?.toString() || user.id;
 }
 
+const useLocalFallback = process.env.USE_LOCAL_FALLBACK === 'true';
+
 async function resolveUserByEmail(email) {
-  try {
+  const connected = mongoose.connection.readyState === 1;
+  console.log(`[Auth] resolveUserByEmail connected=${connected} useLocalFallback=${useLocalFallback} email=${email}`);
+
+  if (connected) {
     const user = await User.findOne({ email });
     if (user) return user;
-  } catch (err) {
-    // Ignore database failures and fall back to local store.
   }
-  return findUserByEmail(email);
+
+  if (useLocalFallback) {
+    console.log('[Auth] resolveUserByEmail falling back to local store');
+    return findUserByEmail(email);
+  }
+
+  return null;
 }
 
 async function resolveUserById(id) {
-  try {
+  const connected = mongoose.connection.readyState === 1;
+  console.log(`[Auth] resolveUserById connected=${connected} useLocalFallback=${useLocalFallback} id=${id}`);
+
+  if (connected) {
     const user = await User.findById(id);
     if (user) return user;
-  } catch (err) {
-    // Ignore database failures and fall back to local store.
   }
-  return findUserById(id);
+
+  if (useLocalFallback) {
+    console.log('[Auth] resolveUserById falling back to local store');
+    return findUserById(id);
+  }
+
+  return null;
 }
 
 async function createAppUser({ fullName, email, password, selectedCourse }) {
+  const connected = mongoose.connection.readyState === 1;
+  console.log(`[Auth] createAppUser connected=${connected} useLocalFallback=${useLocalFallback} email=${email}`);
+
+  if (!connected) {
+    if (useLocalFallback) {
+      console.log('[Auth] createAppUser using local store fallback');
+      return createLocalUser({ fullName, email, password, selectedCourse });
+    }
+    throw new Error('Database connection unavailable. Set MONGO_URL to persist users in MongoDB.');
+  }
+
   try {
+    console.log('[Auth] createAppUser saving to MongoDB');
     return await User.create({
       fullName,
       email,
@@ -39,7 +68,8 @@ async function createAppUser({ fullName, email, password, selectedCourse }) {
       selectedCourse
     });
   } catch (err) {
-    return createLocalUser({ fullName, email, password, selectedCourse });
+    console.error('MongoDB create user failed:', err.message);
+    throw err;
   }
 }
 

@@ -10,9 +10,9 @@ function Footer() {
       <div 
         className="footer-grid" 
         style={{ 
-          display: 'grid', 
-          // Dynamically sets to a single column on mobile, or 4 columns on desktop layouts
-          gridTemplateColumns: isMobile ? '1fr' : '1.2fr repeat(3, 1fr)', 
+          display: isMobile ? 'grid' : 'flex',
+          flexWrap: isMobile ? 'unset' : 'wrap',
+          justifyContent: isMobile ? 'unset' : 'center',
           gap: isMobile ? '36px' : '40px', 
           maxWidth: '1440px', 
           margin: '0 auto', 
@@ -21,7 +21,7 @@ function Footer() {
       >
         
         {/* Column 1: Brand Info, Address, & Social Profiles */}
-        <div className="footer-meta-column" style={{ maxWidth: isMobile ? '100%' : '360px' }}>
+        <div className="footer-meta-column" style={{ maxWidth: isMobile ? '100%' : '360px', flex: isMobile ? 'unset' : '0 1 360px' }}>
           <Link to="/" style={{ display: 'inline-block', marginBottom: '16px' }}>
             <img 
               src="/logo-3.png" 
@@ -76,7 +76,7 @@ function Footer() {
         </div>
 
         {/* Column 2: Academic Pathways Links */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', flex: isMobile ? 'unset' : '1 1 220px', minWidth: '220px' }}>
           <h4 className="footer-heading" style={{ fontSize: '1rem', marginBottom: '4px', letterSpacing: '0.05em' }}>ACADEMICS</h4>
           <Link to="/courses">Frontend Engineering</Link>
           <Link to="/courses">Backend Systems</Link>
@@ -85,7 +85,7 @@ function Footer() {
         </div>
 
         {/* Column 3: Corporate Portals */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', flex: isMobile ? 'unset' : '1 1 220px', minWidth: '220px' }}>
           <h4 className="footer-heading" style={{ fontSize: '1rem', marginBottom: '4px', letterSpacing: '0.05em' }}>RESOURCES</h4>
           <Link to="/opportunities">Career Opportunities</Link>
           <Link to="/about">About Academy</Link>
@@ -94,7 +94,7 @@ function Footer() {
         </div>
 
         {/* Column 4: Contact Connect Help desk */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', flex: isMobile ? 'unset' : '1 1 220px', minWidth: '220px' }}>
           <h4 className="footer-heading" style={{ fontSize: '1rem', marginBottom: '4px', letterSpacing: '0.05em' }}>SUPPORT</h4>
           <p style={{ margin: '0', fontSize: '0.9rem' }}>Questions or Admissions support?</p>
           <a href="mailto:admissions@codeweb.edu" style={{ fontWeight: '700', color: 'var(--accent-color)' }}>admissions@codeweb.edu</a>
@@ -104,9 +104,9 @@ function Footer() {
       </div>
 
       {/* Flat sub-base legal disclaimer banner row */}
-      <div style={{ marginTop: '48px', paddingTop: '20px', borderTop: '1px solid var(--panel-border, rgba(255,255,255,0.08))', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '14px', fontSize: '0.85rem', opacity: 0.7, maxWidth: '1440px', margin: '48px auto 0' }}>
+      <div style={{ marginTop: '48px', paddingTop: '20px', borderTop: '1px solid var(--panel-border, rgba(255,255,255,0.08))', display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', gap: '14px', fontSize: '0.85rem', opacity: 0.7, maxWidth: '1440px', margin: '48px auto 0' }}>
         <span>&copy; {new Date().getFullYear()} CodeWeb Academy Group. All global rights reserved.</span>
-        <div style={{ display: 'flex', gap: '20px' }}>
+        <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <a href="#terms">Terms of Training</a>
           <a href="#cookies">Cookie Preferences</a>
         </div>
