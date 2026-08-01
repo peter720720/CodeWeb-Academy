@@ -55,9 +55,30 @@ const transporter = nodemailer.createTransport({
 });
 
 // Middleware Configuration
-// Allow frontend origin to be configured via environment for deployments (Render, Vercel, etc.)
-const FRONTEND_URL = process.env.CLIENT_URL || process.env.FRONTEND_URL || 'http://localhost:5173';
-app.use(cors({ origin: FRONTEND_URL, credentials: true }));
+// Allow one or more frontend origins to be configured via environment for deployments (Render, Vercel, etc.)
+const frontendOriginConfig = process.env.CLIENT_URL || process.env.FRONTEND_URL;
+const FRONTEND_URLS = frontendOriginConfig
+  ? frontendOriginConfig.split(',').map((url) => url.trim()).filter(Boolean)
+  : [];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin) {
+      callback(null, true);
+      return;
+    }
+
+    if (FRONTEND_URLS.length === 0 || FRONTEND_URLS.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error(`Origin ${origin} not allowed by CORS`));
+  },
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Mount API routes
