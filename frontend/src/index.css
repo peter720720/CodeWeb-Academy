@@ -166,17 +166,23 @@ html, body {
 
  .nav-tools {
     display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-end !important; /* Keeps items flush to the right edge */
-    
-    /* CRITICAL ALIGNMENT: Pushes the container down to line up straight with the logo */
-    padding-top: 14px !important;    /* Adjust this number slightly up or down if needed */
-    margin: 0 !important;             /* Clears out any old negative margin pulls */
-    
-    /* Adds clean vertical space to keep the spinning circle separated underneath */
-    gap: 16px !important;            
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 12px !important;
     flex: 0 0 auto !important;
   }
+
+.nav-tools .logout-button {
+    border: 1px solid var(--accent-color);
+    background: transparent;
+    color: var(--accent-color);
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+}
 
 .color-toggle {
   width: 44px;

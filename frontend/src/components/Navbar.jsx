@@ -127,7 +127,6 @@ function Navbar({ user, accentColor, currentThemeId, colors, onColorChange, onLo
               setIsMenuOpen(false);
               onLogout();
             }}
-            style={{ marginRight: '10px', padding: '10px 16px', borderRadius: '999px', background: 'transparent', border: '1px solid var(--accent-color)', color: 'var(--accent-color)', cursor: 'pointer' }}
           >
             Logout
           </button>
