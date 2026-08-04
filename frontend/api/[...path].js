@@ -7,11 +7,23 @@ export default async function handler(req, res) {
   const headers = { ...req.headers };
   delete headers.host;
 
+  let body;
+  if (!['GET', 'HEAD'].includes(req.method)) {
+    if (typeof req.body === 'string' || req.body instanceof Uint8Array || req.body instanceof Buffer) {
+      body = req.body;
+    } else {
+      body = JSON.stringify(req.body || {});
+      if (!headers['content-type'] && !headers['Content-Type']) {
+        headers['Content-Type'] = 'application/json';
+      }
+    }
+  }
+
   try {
     const backendResponse = await fetch(targetUrl, {
       method: req.method,
       headers,
-      body: ['GET', 'HEAD'].includes(req.method) ? undefined : req.body
+      body
     });
 
     const responseBody = await backendResponse.arrayBuffer();

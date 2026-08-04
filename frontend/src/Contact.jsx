@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getApiBase } from './api';
+import { fetchApi } from './api';
 
 function Contact() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
@@ -17,8 +17,7 @@ function Contact() {
     setStatus(null);
 
     try {
-      const API_BASE = getApiBase();
-      const response = await fetch(`${API_BASE}/api/admin/contact-message`, {
+      const response = await fetchApi('/api/admin/contact-message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)
