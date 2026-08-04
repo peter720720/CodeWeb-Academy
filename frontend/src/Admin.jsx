@@ -101,6 +101,16 @@ function CourseSchedulePage({ accentColor, courses, onCourseScheduleUpdate }) {
   ));
   const [status, setStatus] = useState(null);
 
+  useEffect(() => {
+    setScheduleMap(courses.reduce((acc, course) => {
+      acc[course.id] = {
+        date: course.scheduleDate || '',
+        time: course.scheduleTime || ''
+      };
+      return acc;
+    }, {}));
+  }, [courses]);
+
   const handleChange = (courseId, field, value) => {
     setScheduleMap((prev) => ({
       ...prev,

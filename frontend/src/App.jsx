@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import { getApiBase } from './api';
+import { getApiBase, fetchApi } from './api';
 import Home from './Home';
 import Courses from './Courses';
 import Enroll from './Enroll';
@@ -62,6 +62,26 @@ function App() {
       }
     }
 
+    const loadRemoteSchedule = async () => {
+      try {
+        const response = await fetchApi('/api/schedule');
+        if (!response.ok) return;
+        const schedule = await response.json();
+        if (!Array.isArray(schedule)) return;
+        setCourses((prevCourses) => prevCourses.map((course) => {
+          const item = schedule.find((entry) => entry.courseId === course.id);
+          return item ? { ...course, scheduleDate: item.date, scheduleTime: item.time } : course;
+        }));
+        const scheduleMap = schedule.reduce((map, item) => {
+          map[item.courseId] = { date: item.date, time: item.time };
+          return map;
+        }, {});
+        localStorage.setItem('courseSchedules', JSON.stringify(scheduleMap));
+      } catch (err) {
+        console.warn('Failed to load remote schedule:', err);
+      }
+    };
+
     const token = localStorage.getItem('codewebToken');
     if (token) {
       const API_BASE = getApiBase();
@@ -85,6 +105,10 @@ function App() {
         });
     }
 
+    loadRemoteSchedule();
+  }, []);
+
+  useEffect(() => {
     document.documentElement.style.setProperty('--accent-color', accentColor);
     
     function lightenHex(hex, percent) {
@@ -116,7 +140,7 @@ function App() {
     });
   };
 
-  const handleCourseScheduleUpdate = (courseId, nextSchedule) => {
+  const handleCourseScheduleUpdate = async (courseId, nextSchedule) => {
     setCourses((prevCourses) => {
       const updated = prevCourses.map((course) => {
         if (course.id !== courseId) return course;
@@ -133,9 +157,94 @@ function App() {
       localStorage.setItem('courseSchedules', JSON.stringify(scheduleMap));
       return updated;
     });
+
+    try {
+      const token = localStorage.getItem('codewebToken');
+      if (!token) return;
+      const API_BASE = getApiBase();
+      const res = await fetch(`${API_BASE}/api/schedule/${courseId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(nextSchedule)
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        console.warn('Schedule sync failed:', body || res.statusText);
+      }
+    } catch (err) {
+      console.warn('Schedule sync error:', err);
+    }
   };
 
-  // TRIGGER AUTOMATIC SPLASH SCREEN TIMER ON LAUNCH/REFRESH
+  useEffect(() => {
+    const coursePrices = localStorage.getItem('coursePrices');
+    const courseSchedules = localStorage.getItem('courseSchedules');
+    if (coursePrices || courseSchedules) {
+      try {
+        const savedPrices = coursePrices ? JSON.parse(coursePrices) : {};
+        const savedSchedules = courseSchedules ? JSON.parse(courseSchedules) : {};
+        setCourses((prevCourses) => prevCourses.map((course) => ({
+          ...course,
+          price: savedPrices[course.id] ?? course.price,
+          scheduleDate: savedSchedules[course.id]?.date ?? course.scheduleDate,
+          scheduleTime: savedSchedules[course.id]?.time ?? course.scheduleTime
+        })));
+      } catch (err) {
+        console.error('Failed to load saved course settings:', err);
+      }
+    }
+
+    const loadRemoteSchedule = async () => {
+      try {
+        const response = await fetchApi('/api/schedule');
+        if (!response.ok) return;
+        const schedule = await response.json();
+        if (!Array.isArray(schedule)) return;
+        setCourses((prevCourses) => prevCourses.map((course) => {
+          const item = schedule.find((entry) => entry.courseId === course.id);
+          return item ? { ...course, scheduleDate: item.date, scheduleTime: item.time } : course;
+        }));
+        const scheduleMap = schedule.reduce((map, item) => {
+          map[item.courseId] = { date: item.date, time: item.time };
+          return map;
+        }, {});
+        localStorage.setItem('courseSchedules', JSON.stringify(scheduleMap));
+      } catch (err) {
+        console.warn('Failed to load remote schedule:', err);
+      }
+    };
+
+    const token = localStorage.getItem('codewebToken');
+    if (token) {
+      const API_BASE = getApiBase();
+      fetch(`${API_BASE}/api/auth/validate`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(async (response) => {
+          if (!response.ok) {
+            localStorage.removeItem('codewebToken');
+            setUser(null);
+            return;
+          }
+          const result = await response.json();
+          setUser(result.user);
+        })
+        .catch(() => {
+          localStorage.removeItem('codewebToken');
+          setUser(null);
+        });
+    }
+
+    loadRemoteSchedule();
+
+    document.documentElement.style.setProperty('--accent-color', accentColor);
+  }, [accentColor]);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false); // Hide loader after 5 seconds
