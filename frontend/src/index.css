@@ -359,7 +359,7 @@ html, body {
     width: 100% !important;
     grid-template-columns: 1fr;
     gap: 24px;
-    text-align: center;
+    text-align: left;
   }
 
   .hero-image-frame,
@@ -375,15 +375,18 @@ html, body {
   }
 
   .hero-copy {
-    justify-self: center;
-    align-items: center;
+    justify-self: start;
+    align-items: flex-start;
     display: flex;
     flex-direction: column;
   }
 
   .hero-copy h1,
-  .hero-copy p {
-    margin-left: auto;
+  .hero-copy p,
+  .hero-copy .eyebrow,
+  .hero-actions {
+    text-align: left;
+    margin-left: 0;
     margin-right: auto;
   }
 
