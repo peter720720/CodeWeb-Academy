@@ -184,6 +184,28 @@ html, body {
     font-size: 0.95rem;
 }
 
+.nav-panel .logout-button {
+  display: none;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: #cfe6ff;
+}
+
+.nav-panel .logout-button:hover {
+  background: rgba(255,255,255,0.04);
+  color: #ffffff;
+}
+
+@media (max-width: 960px) {
+  .nav-panel .logout-button {
+    display: block;
+  }
+}
+
 .color-toggle {
   width: 44px;
   height: 44px;
@@ -958,6 +980,10 @@ html, body {
     z-index: 10010;
     flex-direction: column !important;
     align-items: flex-end !important;
+  }
+
+  .nav-tools .logout-button {
+    display: none !important;
   }
 
   .color-toggle {

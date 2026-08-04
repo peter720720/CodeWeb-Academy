@@ -93,6 +93,19 @@ function Navbar({ user, accentColor, currentThemeId, colors, onColorChange, onLo
               {link.label}
             </NavLink>
           ))}
+
+          {user && (
+            <button
+              type="button"
+              className="nav-link logout-button menu-logout"
+              onClick={() => {
+                setIsMenuOpen(false);
+                onLogout();
+              }}
+            >
+              Logout
+            </button>
+          )}
         </div>
       </nav>
 
