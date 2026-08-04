@@ -12,5 +12,8 @@
     { "src": "^/api/(.*)$", "dest": "https://codeweb-academy.onrender.com/api/$1" },
     { "src": "^/admin(?:/.*)?$", "dest": "/index.html" },
     { "src": "^/(.*)$", "dest": "/index.html" }
+  ],
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://codeweb-academy.onrender.com/api/:path*" }
   ]
 }

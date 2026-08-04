@@ -1,5 +1,4 @@
 const DEFAULT_LOCAL_API = 'http://localhost:3500';
-const DEFAULT_PROD_API = 'https://code-web-academy.onrender.com';
 
 const buildApiCandidates = () => {
   const candidates = [];
@@ -11,7 +10,6 @@ const buildApiCandidates = () => {
     if (typeof window !== 'undefined' && window.location) {
       candidates.push(window.location.origin);
     }
-    candidates.push(DEFAULT_PROD_API);
   } else {
     candidates.push(DEFAULT_LOCAL_API);
   }
