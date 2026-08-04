@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { getApiBase } from './api';
+import { getApiBase, fetchApi } from './api';
 
 function AdminHeader({ accentColor, title }) {
   return (
@@ -97,12 +97,11 @@ function CollectionsPage({ accentColor }) {
   useEffect(() => {
     async function loadStats() {
       try {
-        const API_BASE = getApiBase();
         const token = localStorage.getItem('codewebToken');
         const headers = { 'Content-Type': 'application/json' };
         if (token) headers.Authorization = `Bearer ${token}`;
 
-        const response = await fetch(`${API_BASE}/api/admin/stats`, { headers });
+        const response = await fetchApi('/api/admin/stats', { headers });
         if (!response.ok) {
           const body = await response.json().catch(() => null);
           throw new Error(body?.message || 'Unable to load admin stats');
@@ -168,12 +167,11 @@ function MessagesPage({ accentColor }) {
     async function loadMessages() {
       setLoading(true);
       try {
-        const API_BASE = getApiBase();
         const token = localStorage.getItem('codewebToken');
         const headers = { 'Content-Type': 'application/json' };
         if (token) headers.Authorization = `Bearer ${token}`;
 
-        const res = await fetch(`${API_BASE}/api/admin/messages`, { headers });
+        const res = await fetchApi('/api/admin/messages', { headers });
         if (!res.ok) {
           const body = await res.json().catch(() => null);
           throw new Error(body?.message || 'Unable to load messages');
@@ -194,11 +192,10 @@ function MessagesPage({ accentColor }) {
   const deleteMessage = async (id) => {
     if (!confirm('Delete this message?')) return;
     try {
-      const API_BASE = getApiBase();
       const token = localStorage.getItem('codewebToken');
       const headers = { 'Content-Type': 'application/json' };
       if (token) headers.Authorization = `Bearer ${token}`;
-      const res = await fetch(`${API_BASE}/api/admin/messages/${id}`, { method: 'DELETE', headers });
+      const res = await fetchApi(`/api/admin/messages/${id}`, { method: 'DELETE', headers });
       if (!res.ok) throw new Error('Delete failed');
       setMessages((cur) => cur.filter((m) => (m._id ? m._id !== id : m.id !== id)));
     } catch (err) {
@@ -216,7 +213,7 @@ function MessagesPage({ accentColor }) {
       if (token) headers.Authorization = `Bearer ${token}`;
 
       const payload = { reply: replyText.trim() };
-      const res = await fetch(`${API_BASE}/api/admin/messages/${activeId}/reply`, {
+      const res = await fetchApi(`/api/admin/messages/${activeId}/reply`, {
         method: 'PATCH',
         headers,
         body: JSON.stringify(payload)

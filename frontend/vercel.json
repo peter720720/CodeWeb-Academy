@@ -9,6 +9,7 @@
   ],
   "routes": [
     { "handle": "filesystem" },
+    { "src": "^/api/(.*)$", "dest": "https://codeweb-academy.onrender.com/api/$1" },
     { "src": "^/admin(?:/.*)?$", "dest": "/index.html" },
     { "src": "^/(.*)$", "dest": "/index.html" }
   ]
