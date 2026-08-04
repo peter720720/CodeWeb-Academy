@@ -2,7 +2,7 @@ const BACKEND_URL = process.env.API_BACKEND_URL || process.env.VITE_API_URL || '
 
 export default async function handler(req, res) {
   const apiPath = req.url.replace(/^\/api/, '') || '/';
-  const targetUrl = `${BACKEND_URL}${apiPath}`;
+  const targetUrl = `${BACKEND_URL}/api${apiPath}`;
 
   const headers = { ...req.headers };
   delete headers.host;
