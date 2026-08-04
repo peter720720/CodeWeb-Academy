@@ -8,26 +8,39 @@ function StudentMessages({ accentColor }) {
 
   useEffect(() => {
     async function loadStudentMessages() {
-      try {
-        const API_BASE = getApiBase();
-        const token = localStorage.getItem('codewebToken');
-        const headers = { 'Content-Type': 'application/json' };
-        if (token) headers.Authorization = `Bearer ${token}`;
+      const API_BASE = getApiBase();
+      const token = localStorage.getItem('codewebToken');
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers.Authorization = `Bearer ${token}`;
 
-        const res = await fetch(`${API_BASE}/api/admin/student/messages`, { headers });
-        if (!res.ok) {
-          const body = await res.json().catch(() => null);
-          throw new Error(body?.message || 'Unable to load your messages.');
+      // Attempt primary configured API base first, then fall back to same-origin.
+      const candidates = [`${API_BASE}/api/admin/student/messages`, '/api/admin/student/messages'];
+
+      for (const url of candidates) {
+        try {
+          const res = await fetch(url, { headers });
+          if (!res.ok) {
+            // If 404 try next candidate, otherwise treat as an error we can't recover from.
+            if (res.status === 404) {
+              console.warn(`Student messages endpoint returned 404 at ${url}, trying fallback.`);
+              continue;
+            }
+            const body = await res.json().catch(() => null);
+            throw new Error(body?.message || `Unable to load messages (status ${res.status}).`);
+          }
+
+          const data = await res.json();
+          setMessages(Array.isArray(data) ? data : []);
+          setError(null);
+          return;
+        } catch (err) {
+          console.warn('Student messages fetch failed for', url, err);
+          // try next candidate
         }
-
-        const data = await res.json();
-        setMessages(Array.isArray(data) ? data : []);
-      } catch (err) {
-        console.error('Load student messages failed:', err);
-        setError('Unable to load your messages.');
-      } finally {
-        setLoading(false);
       }
+
+      setError('Unable to load your messages.');
+      setLoading(false);
     }
 
     loadStudentMessages();
