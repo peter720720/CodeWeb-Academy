@@ -29,9 +29,18 @@ function StudentMessages({ accentColor }) {
             throw new Error(body?.message || `Unable to load messages (status ${res.status}).`);
           }
 
+          // Ensure the response is JSON before attempting to parse.
+          const contentType = res.headers.get('content-type') || '';
+          if (!contentType.includes('application/json')) {
+            console.warn(`Expected JSON but got ${contentType} from ${url}`);
+            // If this was the same-origin fallback returning HTML (index.html), try next candidate or fail.
+            continue;
+          }
+
           const data = await res.json();
           setMessages(Array.isArray(data) ? data : []);
           setError(null);
+          setLoading(false);
           return;
         } catch (err) {
           console.warn('Student messages fetch failed for', url, err);
