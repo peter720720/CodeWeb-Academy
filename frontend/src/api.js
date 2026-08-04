@@ -1,5 +1,4 @@
 const DEFAULT_LOCAL_API = 'http://localhost:3500';
-const DEFAULT_PROD_API = 'https://codeweb-academy.onrender.com';
 
 export const getApiBase = () => {
   if (import.meta.env.VITE_API_URL) {
@@ -7,7 +6,10 @@ export const getApiBase = () => {
   }
 
   if (import.meta.env.MODE === 'production') {
-    return DEFAULT_PROD_API;
+    if (typeof window !== 'undefined' && window.location) {
+      return window.location.origin;
+    }
+    return '';
   }
 
   return DEFAULT_LOCAL_API;
