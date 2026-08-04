@@ -1,6 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { getApiBase } from './api';
 
 function Contact() {
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [status, setStatus] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    setStatus(null);
+
+    try {
+      const API_BASE = getApiBase();
+      const response = await fetch(`${API_BASE}/api/admin/contact-message`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.message || 'Unable to send message.');
+      }
+
+      setStatus({ type: 'success', message: 'Message sent successfully. We will reply shortly.' });
+      setForm({ name: '', email: '', message: '' });
+    } catch (err) {
+      console.error('Contact submit failed:', err);
+      setStatus({ type: 'error', message: err.message || 'Message submission failed.' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="section-block contact-page" style={{ paddingTop: '48px', paddingBottom: '64px' }}>
       <div style={{ maxWidth: '1080px', margin: '0 auto', padding: '0 24px' }}>
@@ -8,7 +46,7 @@ function Contact() {
           <span className="eyebrow">Get in touch</span>
           <div>
             <h2 style={{ fontSize: 'clamp(2.4rem, 3vw, 3.6rem)', marginBottom: '18px', lineHeight: 1.05 }}>Contact CodeWeb Academy</h2>
-            <p style={{ maxWidth: '760px', lineHeight: 1.85, color: 'var(--muted-color, #b8c5e0)' }}>
+            <p style={{ maxWidth: '760px', lineHeight: '1.85', color: 'var(--muted-color, #b8c5e0)' }}>
               Have questions, want to discuss a tailored learning path, or need help choosing the right course? Send us a message and our team will get back to you promptly.
             </p>
           </div>
@@ -37,12 +75,16 @@ function Contact() {
           <div style={{ padding: '32px', borderRadius: '32px', background: 'linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02))', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 32px 80px rgba(0,0,0,0.18)' }}>
             <p style={{ margin: 0, color: 'var(--accent-color)', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase' }}>Send a message</p>
             <h3 style={{ marginTop: '18px', marginBottom: '20px', fontSize: '1.7rem' }}>Let us know how we can support you</h3>
-            <form style={{ display: 'grid', gap: '18px' }}>
+            <form style={{ display: 'grid', gap: '18px' }} onSubmit={handleSubmit}>
               <label style={{ display: 'grid', gap: '10px', color: '#d9e1ff', fontWeight: 500 }}>
                 Name
                 <input
+                  name="name"
                   type="text"
+                  value={form.name}
+                  onChange={handleChange}
                   placeholder="Your name"
+                  required
                   style={{
                     padding: '16px',
                     borderRadius: '16px',
@@ -56,8 +98,12 @@ function Contact() {
               <label style={{ display: 'grid', gap: '10px', color: '#d9e1ff', fontWeight: 500 }}>
                 Email
                 <input
+                  name="email"
                   type="email"
+                  value={form.email}
+                  onChange={handleChange}
                   placeholder="Your email"
+                  required
                   style={{
                     padding: '16px',
                     borderRadius: '16px',
@@ -71,8 +117,12 @@ function Contact() {
               <label style={{ display: 'grid', gap: '10px', color: '#d9e1ff', fontWeight: 500 }}>
                 Message
                 <textarea
+                  name="message"
+                  value={form.message}
+                  onChange={handleChange}
                   placeholder="Tell us what you need"
                   rows="6"
+                  required
                   style={{
                     padding: '16px',
                     borderRadius: '16px',
@@ -87,6 +137,7 @@ function Contact() {
               <button
                 type="submit"
                 className="button button-primary"
+                disabled={loading}
                 style={{
                   width: 'fit-content',
                   padding: '16px 38px',
@@ -94,8 +145,13 @@ function Contact() {
                   boxShadow: '0 18px 40px rgba(37, 99, 235, 0.24)'
                 }}
               >
-                Send Message
+                {loading ? 'Sending...' : 'Send Message'}
               </button>
+              {status && (
+                <div style={{ marginTop: '12px', color: status.type === 'success' ? '#98ff9a' : '#ff9a9a' }}>
+                  {status.message}
+                </div>
+              )}
             </form>
           </div>
         </div>

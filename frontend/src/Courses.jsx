@@ -43,6 +43,11 @@ function Courses({ courses }) {
             cardImage = "/product-management.png";
           }
           
+          const formatPrice = (value) => {
+            if (value === 0) return 'Pending';
+            if (value == null || value === '') return 'Contact for pricing';
+            return `₦${Number(value).toLocaleString()}`;
+          };
           return (
             <article className="course-card" key={course.id}>
               <div 
@@ -53,6 +58,7 @@ function Courses({ courses }) {
                 <p className="course-tag">{course.category}</p>
                 <h3>{course.title}</h3>
                 <p>{course.description}</p>
+                <p className="course-price" style={{ margin: '16px 0 0', fontWeight: 700 }}>{formatPrice(course.price)}</p>
                 <p className="course-detail-text">{course.details}</p>
                 <a className="learn-more" href="/courses">Learn more</a>
               </div>

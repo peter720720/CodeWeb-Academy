@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getApiBase } from './api';
 
 function Enroll({ courses }) {
@@ -32,8 +32,8 @@ function Enroll({ courses }) {
 
       const result = await response.json();
       if (response.ok) {
-        setStatus('Signup successful! Redirecting to login...');
-        setTimeout(() => navigate('/login'), 1200);
+        setStatus('Signup successful! Redirecting to admin login...');
+        setTimeout(() => navigate('/admin'), 1200);
         return;
       }
 
@@ -110,7 +110,7 @@ function Enroll({ courses }) {
         </label>
 
         <p style={{ margin: '0 0 24px 0', color: 'var(--muted-color)', fontSize: '0.95rem' }}>
-          Already have an account? <a href="#/login" style={{ color: 'var(--accent-color)', fontWeight: 700 }}>Login</a>
+          Already have an account? <Link to="/login" style={{ color: 'var(--accent-color)', fontWeight: 700 }}>Login</Link>
         </p>
 
         <button className="button button-primary" type="submit" style={{ width: '100%', padding: '14px' }}>

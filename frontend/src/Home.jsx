@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
-function Home({ courses }) {
+function Home({ courses, accentColor }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeCourse = courses[activeIndex];
   const [direction, setDirection] = useState(1); 
@@ -63,6 +63,12 @@ function Home({ courses }) {
       opacity: 1, // Solid exit
       transition: { x: { type: 'spring', stiffness: 220, damping: 26 } }
     }),
+  };
+
+  const formatPrice = (value) => {
+    if (value === 0) return 'Pending';
+    if (value == null || value === '') return 'Contact for pricing';
+    return `₦${Number(value).toLocaleString()}`;
   };
 
   return (
@@ -126,12 +132,13 @@ function Home({ courses }) {
               flexWrap: 'wrap'
             }}
           >
-            <div className="carousel-copy" style={{ flex: '1 1 450px' }}>
+            <div className="carousel-copy" style={{ flex: '1 1 450px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
               <p className="eyebrow">Featured course</p>
               <h3>{activeCourse.title}</h3>
               <p>{activeCourse.description}</p>
               <p className="course-details">{activeCourse.details}</p>
-              <Link className="button button-primary" to="/courses">Learn more</Link>
+              <p style={{ margin: '28px 0 20px', fontWeight: 700, color: accentColor, fontSize: '1.25rem', lineHeight: 1.4 }}>{formatPrice(activeCourse.price)}</p>
+              <Link className="button button-primary" to="/courses" style={{ marginTop: '36px' }}>Learn more</Link>
             </div>
             <div className="carousel-image" style={{ backgroundImage: `url("${carouselImage}")`, flex: '1 1 380px' }} />
           </motion.div>
@@ -140,7 +147,7 @@ function Home({ courses }) {
 
       <div className="carousel-controls">
         <button type="button" className="button-outline" onClick={handlePrev}>Previous</button>
-        <span>{activeCourse.category}</span>
+        <span>{activeCourse.title}</span>
         <button type="button" className="button-outline" onClick={handleNext}>Next</button>
       </div>
     </section>

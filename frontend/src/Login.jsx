@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getApiBase } from './api';
 
-function Login({ onLogin }) {
+function Login({ onLogin, admin = false }) {
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '' });
   const [status, setStatus] = useState(null);
@@ -29,9 +29,13 @@ function Login({ onLogin }) {
         if (onLogin) {
           onLogin({ user: result.user, token: result.token });
         }
-        setStatus('Login successful! Redirecting to your track...');
-        const courseId = result.user?.selectedCourse || 'frontend';
-        setTimeout(() => navigate(`/track/${courseId}`), 1200);
+        setStatus('Login successful! Redirecting...');
+        if (admin) {
+          setTimeout(() => navigate('/admin/collections'), 800);
+        } else {
+          const courseId = result.user?.selectedCourse || 'frontend';
+          setTimeout(() => navigate(`/track/${courseId}`), 1200);
+        }
         return;
       }
 

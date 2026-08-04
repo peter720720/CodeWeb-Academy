@@ -18,6 +18,7 @@ import { fileURLToPath } from 'url';
 // Modular routes & models
 import authRoutes from './routes/authRoutes.js';
 import coursesRoutes from './routes/coursesRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 import User from './models/User.js';
 import { findUserByEmail, createUser as createLocalUser } from './data/userStore.js';
 
@@ -90,6 +91,7 @@ app.use(express.json());
 // Mount API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', coursesRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Static CodeWeb Course Catalog
 const COURSES = [

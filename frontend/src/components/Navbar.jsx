@@ -1,20 +1,31 @@
 import { useState, useEffect, useRef } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 
 function Navbar({ user, accentColor, currentThemeId, colors, onColorChange, onLogout, theme }) {
+  const location = useLocation();
   const [isColorOpen, setIsColorOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const colorRef = useRef(null);
-  const links = [
-    { to: '/', label: 'Home' },
-    { to: '/about', label: 'About' },
-    { to: '/courses', label: 'Courses' },
-    ...(user && user.selectedCourse ? [{ to: `/track/${user.selectedCourse}`, label: 'Track' }] : []),
-    { to: '/opportunities', label: 'Opportunities' },
-    { to: '/contact', label: 'Contact' },
-    ...(!user ? [{ to: '/enroll', label: 'Enroll Now' }] : [])
-  ];
+  const isAdminRoute = location.pathname.startsWith('/admin');
+  const navigate = useNavigate();
+  const adminToken = typeof window !== 'undefined' ? localStorage.getItem('codewebToken') : null;
+  const links = isAdminRoute
+    ? (adminToken ? [
+      { to: '/admin/collections', label: 'Collections' },
+      { to: '/admin/messages', label: 'Messages' },
+      { to: '/admin/pricing', label: 'Pricing' },
+      { to: '/admin/uploads', label: 'Uploads' }
+    ] : [])
+    : [
+      { to: '/', label: 'Home' },
+      { to: '/about', label: 'About' },
+      { to: '/courses', label: 'Courses' },
+      ...(user && user.selectedCourse ? [{ to: `/track/${user.selectedCourse}`, label: 'Track' }] : []),
+      { to: '/opportunities', label: 'Opportunities' },
+      { to: '/contact', label: 'Contact' },
+      ...(!user ? [{ to: '/enroll', label: 'Enroll Now' }] : [])
+    ];
 
   useEffect(() => {
     function handleOutside(e) {
@@ -58,7 +69,7 @@ function Navbar({ user, accentColor, currentThemeId, colors, onColorChange, onLo
 
   return (
     <header className="site-header">
-      <Link to="/" className="brand brand-link">
+      <Link to={isAdminRoute ? '/admin' : '/'} className="brand brand-link">
         <img 
           src="/logo-3.png" 
           alt="CodeWeb logo" 
@@ -94,13 +105,14 @@ function Navbar({ user, accentColor, currentThemeId, colors, onColorChange, onLo
             </NavLink>
           ))}
 
-          {user && (
+          {(user || adminToken) && (
             <button
               type="button"
               className="nav-link logout-button menu-logout"
               onClick={() => {
                 setIsMenuOpen(false);
                 onLogout();
+                navigate(isAdminRoute ? '/admin/login' : '/');
               }}
             >
               Logout
@@ -132,18 +144,19 @@ function Navbar({ user, accentColor, currentThemeId, colors, onColorChange, onLo
         </button>
 
         {/* The Theme Spinning wheel is stacked directly underneath */}
-        {user && (
+        {(user || adminToken) ? (
           <button
             type="button"
             className="nav-link logout-button"
             onClick={() => {
               setIsMenuOpen(false);
               onLogout();
+              navigate(isAdminRoute ? '/admin/login' : '/');
             }}
           >
             Logout
           </button>
-        )}
+        ) : null}
 
         <button
           type="button"

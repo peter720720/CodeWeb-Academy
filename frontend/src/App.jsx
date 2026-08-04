@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import { getApiBase } from './api';
 import Home from './Home';
@@ -10,18 +10,19 @@ import CourseDetail from './CourseDetail';
 import Contact from './Contact';
 import About from './About';
 import Opportunities from './Opportunities';
+import Admin from './Admin';
 import Footer from './Footer';
 import Loader from './components/Loader';
 
 const defaultCourses = [
-  { id: 'frontend', title: 'Frontend Development', description: 'Build interfaces with modern web technologies.', details: 'HTML, CSS, JavaScript, React, Vite and real projects.', category: 'Frontend', image: 'https://unsplash.com' },
-  { id: 'backend', title: 'Backend Development', description: 'APIs, databases, authentication and deployment.', details: 'Node.js, Express, MongoDB, REST and best practices.', category: 'Backend', image: 'https://unsplash.com' },
-  { id: 'fullstack', title: 'Full-Stack Development', description: 'End-to-end web development skills.', details: 'Frontend + Backend + Deployment workflows and CI/CD.', category: 'Full-Stack', image: 'https://unsplash.com' },
-  { id: 'cyber', title: 'Cybersecurity', description: 'Fundamentals of secure systems and defense.', details: 'Threat modelling, secure coding, and basic forensics.', category: 'Security', image: 'https://unsplash.com' },
-  { id: 'data', title: 'Data Analysis', description: 'Learn to analyze and visualize data.', details: 'Python, SQL, statistics, and visualization tools.', category: 'Data', image: 'https://unsplash.com' },
-  { id: 'graphics', title: 'Graphics Design', description: 'Design for web and product interfaces.', details: 'Visual design, Figma, composition, and prototyping.', category: 'Design', image: 'https://unsplash.com' },
-  { id: 'production', title: 'Production Design', description: 'Ship polished products and systems.', details: 'Design systems, accessibility, and production readiness.', category: 'Design', image: 'https://unsplash.com' },
-  { id: 'product', title: 'Product Management', description: 'Understand product discovery and delivery.', details: 'Roadmaps, discovery, user research, and stakeholder management.', category: 'Product', image: 'https://unsplash.com' }
+  { id: 'frontend', title: 'Frontend Development', description: 'Build interfaces with modern web technologies.', details: 'HTML, CSS, JavaScript, React, Vite and real projects.', category: 'Frontend', image: 'https://unsplash.com', price: 200000 },
+  { id: 'backend', title: 'Backend Development', description: 'APIs, databases, authentication and deployment.', details: 'Node.js, Express, MongoDB, REST and best practices.', category: 'Backend', image: 'https://unsplash.com', price: 220000 },
+  { id: 'fullstack', title: 'Full-Stack Development', description: 'End-to-end web development skills.', details: 'Frontend + Backend + Deployment workflows and CI/CD.', category: 'Full-Stack', image: 'https://unsplash.com', price: 320000 },
+  { id: 'cyber', title: 'Cybersecurity', description: 'Fundamentals of secure systems and defense.', details: 'Threat modelling, secure coding, and basic forensics.', category: 'Security', image: 'https://unsplash.com', price: 180000 },
+  { id: 'data', title: 'Data Analysis', description: 'Learn to analyze and visualize data.', details: 'Python, SQL, statistics, and visualization tools.', category: 'Data', image: 'https://unsplash.com', price: 210000 },
+  { id: 'graphics', title: 'Graphics Design', description: 'Design for web and product interfaces.', details: 'Visual design, Figma, composition, and prototyping.', category: 'Design', image: 'https://unsplash.com', price: 170000 },
+  { id: 'production', title: 'Production Design', description: 'Ship polished products and systems.', details: 'Design systems, accessibility, and production readiness.', category: 'Design', image: 'https://unsplash.com', price: 190000 },
+  { id: 'product', title: 'Product Management', description: 'Understand product discovery and delivery.', details: 'Roadmaps, discovery, user research, and stakeholder management.', category: 'Product', image: 'https://unsplash.com', price: 195000 }
 ];
 
 const colorOptions = [
@@ -36,7 +37,7 @@ const colorOptions = [
 ];
 
 function App() {
-  const [courses] = useState(defaultCourses);
+  const [courses, setCourses] = useState(defaultCourses);
   const [user, setUser] = useState(null);
   const [accentColor, setAccentColor] = useState(colorOptions[0].value);
   const [currentThemeId, setCurrentThemeId] = useState(colorOptions[0].id);
@@ -44,6 +45,19 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const coursePrices = localStorage.getItem('coursePrices');
+    if (coursePrices) {
+      try {
+        const savedPrices = JSON.parse(coursePrices);
+        setCourses((prevCourses) => prevCourses.map((course) => ({
+          ...course,
+          price: savedPrices[course.id] ?? course.price
+        })));
+      } catch (err) {
+        console.error('Failed to load saved course prices:', err);
+      }
+    }
+
     const token = localStorage.getItem('codewebToken');
     if (token) {
       const API_BASE = getApiBase();
@@ -83,6 +97,21 @@ function App() {
     document.documentElement.style.setProperty('--accent-gradient-end', end);
   }, [accentColor]);
 
+  const handleCoursePriceUpdate = (courseId, nextPrice) => {
+    setCourses((prevCourses) => {
+      const updated = prevCourses.map((course) => {
+        if (course.id !== courseId) return course;
+        return { ...course, price: nextPrice };
+      });
+      const priceMap = updated.reduce((map, course) => {
+        map[course.id] = course.price;
+        return map;
+      }, {});
+      localStorage.setItem('coursePrices', JSON.stringify(priceMap));
+      return updated;
+    });
+  };
+
   // TRIGGER AUTOMATIC SPLASH SCREEN TIMER ON LAUNCH/REFRESH
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -119,7 +148,7 @@ function App() {
   }
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <div className={`app-shell ${theme === 'dark' ? 'dark-theme' : 'white-theme'}`}>
         {/* Pass your live active theme state value right here */}
         <Navbar 
@@ -141,15 +170,16 @@ function App() {
               setUser(user);
               localStorage.setItem('codewebToken', token);
             }} />} />
-            <Route path="/track/:id" element={<CourseDetail courses={courses} user={user} />} />
+            <Route path="/track/:id" element={<CourseDetail courses={courses} user={user} accentColor={accentColor} />} />
             <Route path="/opportunities" element={<Opportunities accentColor={accentColor} />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/admin/*" element={<Admin accentColor={accentColor} courses={courses} onCoursePriceUpdate={handleCoursePriceUpdate} />} />
             <Route path="*" element={<Home courses={courses} accentColor={accentColor} />} />
           </Routes>
         </main>
         <Footer />
       </div>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 

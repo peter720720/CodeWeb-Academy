@@ -76,8 +76,8 @@ html, body {
 }
 
 .site-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 24px;
   padding: 20px 0;
@@ -123,6 +123,10 @@ html, body {
 
 .nav-links {
   display: flex !important;
+  flex: 1 1 auto !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  min-width: 0 !important;
   transform: none !important; /* Forces links to stay fully visible on computer screens */
   position: static !important;
   width: auto !important;
@@ -131,7 +135,7 @@ html, body {
   background: transparent !important;
   padding: 0 !important;
   pointer-events: auto !important;
-}  
+}
   /* 2. SLIDES THE MENU SCREEN IN FROM THE LEFT VIEWPORT BOUNDARY WHEN OPENED */
   .nav-links.open {
     transform: translateX(0) !important; /* Snaps smoothly back to full position */
@@ -644,6 +648,8 @@ html, body {
 
 .course-info {
   padding: 22px;
+  display: flex;
+  flex-direction: column;
 }
 
 .course-info h3 {
@@ -655,13 +661,26 @@ html, body {
   color: var(--panel-text, #cdd5eb);
 }
 
+.course-price {
+  margin: 0 0 16px;
+  font-weight: 700;
+  color: var(--text-color);
+  line-height: 1.4;
+  display: block;
+  z-index: 1;
+}
+
 .course-detail-text {
   color: var(--muted-color, #a9b6d8);
 }
 
 .learn-more {
+  display: inline-block;
+  margin-top: auto;
   color: var(--accent-color) !important;
   font-weight: 700;
+  position: relative;
+  z-index: 1;
 }
 
 .feature-grid,

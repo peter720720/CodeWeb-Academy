@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import StudentMessages from './StudentMessages';
 
-function CourseDetail({ courses, user }) {
+function CourseDetail({ courses, user, accentColor }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const course = courses.find((item) => item.id === id);
@@ -27,12 +28,19 @@ function CourseDetail({ courses, user }) {
     );
   }
 
+  const formatPrice = (value) => {
+    if (value === 0) return 'Pending';
+    if (value == null || value === '') return 'Contact for pricing';
+    return `₦${Number(value).toLocaleString()}`;
+  };
+
   return (
     <section className="section-block">
       <div className="section-title">
         <span className="eyebrow">Track</span>
         <h2>Your Track: {course.title}</h2>
         <p>{course.details}</p>
+        <p style={{ marginTop: '14px', fontWeight: 700, color: '#7c3aed' }}>{formatPrice(course.price)}</p>
       </div>
 
       <div className="course-card" style={{ maxWidth: '720px', margin: '0 auto' }}>
@@ -46,6 +54,8 @@ function CourseDetail({ courses, user }) {
           </Link>
         </div>
       </div>
+
+      <StudentMessages accentColor={accentColor} />
     </section>
   );
 }
