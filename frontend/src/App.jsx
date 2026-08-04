@@ -13,6 +13,7 @@ import Opportunities from './Opportunities';
 import Admin from './Admin';
 import Footer from './Footer';
 import Loader from './components/Loader';
+import './admin-responsive.css';
 
 const defaultCourses = [
   { id: 'frontend', title: 'Frontend Development', description: 'Build interfaces with modern web technologies.', details: 'HTML, CSS, JavaScript, React, Vite and real projects.', category: 'Frontend', image: 'https://unsplash.com', price: 200000, scheduleDate: '', scheduleTime: '' },

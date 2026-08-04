@@ -121,9 +121,9 @@ function CourseSchedulePage({ accentColor, courses, onCourseScheduleUpdate }) {
     }));
   };
 
-  const handleSaveSchedule = (courseId) => {
+  const handleSaveSchedule = async (courseId) => {
     const nextSchedule = scheduleMap[courseId] || { date: '', time: '' };
-    onCourseScheduleUpdate(courseId, nextSchedule);
+    await onCourseScheduleUpdate(courseId, nextSchedule);
     setStatus(`Updated schedule for ${courses.find((course) => course.id === courseId)?.title}`);
     window.setTimeout(() => setStatus(null), 2500);
   };
@@ -131,28 +131,28 @@ function CourseSchedulePage({ accentColor, courses, onCourseScheduleUpdate }) {
   return (
     <section className="section-block admin-page" style={{ paddingTop: '28px' }}>
       <AdminHeader accentColor={accentColor} title="Course Schedule" />
-      <div style={{ display: 'grid', gap: '24px' }}>
-        <div style={{ padding: '28px', borderRadius: '24px', background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(255,255,255,0.08)' }}>
+      <div className="admin-block">
+        <div className="admin-card admin-panel">
           <h2 style={{ color: accentColor, marginBottom: '16px' }}>Set class dates and times for each course.</h2>
           {status && <p style={{ color: '#98ff9a' }}>{status}</p>}
-          <div style={{ display: 'grid', gap: '18px' }}>
+          <div className="admin-card-list">
             {courses.map((course) => {
               const current = scheduleMap[course.id] || { date: '', time: '' };
               return (
-                <div key={course.id} style={{ display: 'grid', gap: '10px', padding: '18px', borderRadius: '20px', background: 'rgba(255,255,255,0.04)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
+                <div key={course.id} className="admin-card">
+                  <div className="admin-card-header">
                     <div>
                       <p style={{ margin: 0, fontWeight: 700 }}>{course.title}</p>
                       <p style={{ margin: '6px 0 0', color: 'var(--muted-color)' }}>{course.description}</p>
                     </div>
-                    <div style={{ textAlign: 'right' }}>
+                    <div className="admin-card-meta">
                       <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--muted-color)' }}>Date</p>
                       <p style={{ margin: 0, fontWeight: 700 }}>{current.date || 'Not set'}</p>
                       <p style={{ margin: '6px 0 0', fontSize: '0.95rem', color: 'var(--muted-color)' }}>Time</p>
                       <p style={{ margin: 0, fontWeight: 700 }}>{current.time || 'Not set'}</p>
                     </div>
                   </div>
-                  <div style={{ display: 'grid', gap: '14px', gridTemplateColumns: '1fr 1fr' }}>
+                  <div className="admin-form-grid">
                     <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                       <span style={{ fontWeight: 600 }}>Scheduled Date</span>
                       <input
@@ -175,7 +175,7 @@ function CourseSchedulePage({ accentColor, courses, onCourseScheduleUpdate }) {
                   <button
                     type="button"
                     onClick={() => handleSaveSchedule(course.id)}
-                    style={{ padding: '12px 24px', borderRadius: '999px', background: accentColor, color: '#fff', border: 'none', justifySelf: 'start' }}
+                    className="admin-button"
                   >
                     Save schedule
                   </button>
