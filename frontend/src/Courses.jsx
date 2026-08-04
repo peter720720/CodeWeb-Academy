@@ -59,6 +59,12 @@ function Courses({ courses }) {
                 <h3>{course.title}</h3>
                 <p>{course.description}</p>
                 <p className="course-price" style={{ margin: '16px 0 0', fontWeight: 700 }}>{formatPrice(course.price)}</p>
+                {course.scheduleDate || course.scheduleTime ? (
+                  <p className="course-detail-text" style={{ margin: '12px 0 0', fontWeight: 600, color: '#9ca3af' }}>
+                    {course.scheduleDate ? new Date(course.scheduleDate).toLocaleDateString() : 'Date not set'}
+                    {course.scheduleTime ? ` · ${course.scheduleTime}` : ''}
+                  </p>
+                ) : null}
                 <p className="course-detail-text">{course.details}</p>
                 <a className="learn-more" href="/courses">Learn more</a>
               </div>

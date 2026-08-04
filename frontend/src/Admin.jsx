@@ -89,6 +89,96 @@ function CoursePricingPage({ accentColor, courses, onCoursePriceUpdate }) {
   );
 }
 
+function CourseSchedulePage({ accentColor, courses, onCourseScheduleUpdate }) {
+  const [scheduleMap, setScheduleMap] = useState(() => (
+    courses.reduce((acc, course) => {
+      acc[course.id] = {
+        date: course.scheduleDate || '',
+        time: course.scheduleTime || ''
+      };
+      return acc;
+    }, {})
+  ));
+  const [status, setStatus] = useState(null);
+
+  const handleChange = (courseId, field, value) => {
+    setScheduleMap((prev) => ({
+      ...prev,
+      [courseId]: {
+        ...prev[courseId],
+        [field]: value
+      }
+    }));
+  };
+
+  const handleSaveSchedule = (courseId) => {
+    const nextSchedule = scheduleMap[courseId] || { date: '', time: '' };
+    onCourseScheduleUpdate(courseId, nextSchedule);
+    setStatus(`Updated schedule for ${courses.find((course) => course.id === courseId)?.title}`);
+    window.setTimeout(() => setStatus(null), 2500);
+  };
+
+  return (
+    <section className="section-block admin-page" style={{ paddingTop: '28px' }}>
+      <AdminHeader accentColor={accentColor} title="Course Schedule" />
+      <div style={{ display: 'grid', gap: '24px' }}>
+        <div style={{ padding: '28px', borderRadius: '24px', background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(255,255,255,0.08)' }}>
+          <h2 style={{ color: accentColor, marginBottom: '16px' }}>Set class dates and times for each course.</h2>
+          {status && <p style={{ color: '#98ff9a' }}>{status}</p>}
+          <div style={{ display: 'grid', gap: '18px' }}>
+            {courses.map((course) => {
+              const current = scheduleMap[course.id] || { date: '', time: '' };
+              return (
+                <div key={course.id} style={{ display: 'grid', gap: '10px', padding: '18px', borderRadius: '20px', background: 'rgba(255,255,255,0.04)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px' }}>
+                    <div>
+                      <p style={{ margin: 0, fontWeight: 700 }}>{course.title}</p>
+                      <p style={{ margin: '6px 0 0', color: 'var(--muted-color)' }}>{course.description}</p>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--muted-color)' }}>Date</p>
+                      <p style={{ margin: 0, fontWeight: 700 }}>{current.date || 'Not set'}</p>
+                      <p style={{ margin: '6px 0 0', fontSize: '0.95rem', color: 'var(--muted-color)' }}>Time</p>
+                      <p style={{ margin: 0, fontWeight: 700 }}>{current.time || 'Not set'}</p>
+                    </div>
+                  </div>
+                  <div style={{ display: 'grid', gap: '14px', gridTemplateColumns: '1fr 1fr' }}>
+                    <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      <span style={{ fontWeight: 600 }}>Scheduled Date</span>
+                      <input
+                        type="date"
+                        value={current.date}
+                        onChange={(e) => handleChange(course.id, 'date', e.target.value)}
+                        style={{ padding: '12px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.18)', background: 'rgba(255,255,255,0.05)', color: 'var(--text-color)' }}
+                      />
+                    </label>
+                    <label style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      <span style={{ fontWeight: 600 }}>Scheduled Time</span>
+                      <input
+                        type="time"
+                        value={current.time}
+                        onChange={(e) => handleChange(course.id, 'time', e.target.value)}
+                        style={{ padding: '12px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.18)', background: 'rgba(255,255,255,0.05)', color: 'var(--text-color)' }}
+                      />
+                    </label>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleSaveSchedule(course.id)}
+                    style={{ padding: '12px 24px', borderRadius: '999px', background: accentColor, color: '#fff', border: 'none', justifySelf: 'start' }}
+                  >
+                    Save schedule
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function CollectionsPage({ accentColor }) {
   const [stats, setStats] = useState({ studentCount: 0, messageCount: 0, studentMessageCount: 0 });
   const [loading, setLoading] = useState(true);
@@ -347,7 +437,7 @@ function UploadsPage({ accentColor }) {
   );
 }
 
-function Admin({ accentColor, courses, onCoursePriceUpdate }) {
+function Admin({ accentColor, courses, onCoursePriceUpdate, onCourseScheduleUpdate }) {
   const location = useLocation();
   const [isAuth, setIsAuth] = useState(Boolean(localStorage.getItem('codewebToken')));
 
@@ -430,6 +520,7 @@ function Admin({ accentColor, courses, onCoursePriceUpdate }) {
           <Route path="collections" element={<CollectionsPage accentColor={accentColor} />} />
           <Route path="messages" element={<MessagesPage accentColor={accentColor} />} />
           <Route path="pricing" element={<CoursePricingPage accentColor={accentColor} courses={courses} onCoursePriceUpdate={onCoursePriceUpdate} />} />
+          <Route path="schedule" element={<CourseSchedulePage accentColor={accentColor} courses={courses} onCourseScheduleUpdate={onCourseScheduleUpdate} />} />
           <Route path="uploads" element={<UploadsPage accentColor={accentColor} />} />
           <Route path="*" element={<CollectionsPage accentColor={accentColor} />} />
         </Routes>

@@ -15,6 +15,7 @@ function Navbar({ user, accentColor, currentThemeId, colors, onColorChange, onLo
       { to: '/admin/collections', label: 'Collections' },
       { to: '/admin/messages', label: 'Messages' },
       { to: '/admin/pricing', label: 'Pricing' },
+      { to: '/admin/schedule', label: 'Schedule' },
       { to: '/admin/uploads', label: 'Uploads' }
     ] : [])
     : [

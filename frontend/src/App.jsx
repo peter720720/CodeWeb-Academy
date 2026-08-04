@@ -15,14 +15,14 @@ import Footer from './Footer';
 import Loader from './components/Loader';
 
 const defaultCourses = [
-  { id: 'frontend', title: 'Frontend Development', description: 'Build interfaces with modern web technologies.', details: 'HTML, CSS, JavaScript, React, Vite and real projects.', category: 'Frontend', image: 'https://unsplash.com', price: 200000 },
-  { id: 'backend', title: 'Backend Development', description: 'APIs, databases, authentication and deployment.', details: 'Node.js, Express, MongoDB, REST and best practices.', category: 'Backend', image: 'https://unsplash.com', price: 220000 },
-  { id: 'fullstack', title: 'Full-Stack Development', description: 'End-to-end web development skills.', details: 'Frontend + Backend + Deployment workflows and CI/CD.', category: 'Full-Stack', image: 'https://unsplash.com', price: 320000 },
-  { id: 'cyber', title: 'Cybersecurity', description: 'Fundamentals of secure systems and defense.', details: 'Threat modelling, secure coding, and basic forensics.', category: 'Security', image: 'https://unsplash.com', price: 180000 },
-  { id: 'data', title: 'Data Analysis', description: 'Learn to analyze and visualize data.', details: 'Python, SQL, statistics, and visualization tools.', category: 'Data', image: 'https://unsplash.com', price: 210000 },
-  { id: 'graphics', title: 'Graphics Design', description: 'Design for web and product interfaces.', details: 'Visual design, Figma, composition, and prototyping.', category: 'Design', image: 'https://unsplash.com', price: 170000 },
-  { id: 'production', title: 'Production Design', description: 'Ship polished products and systems.', details: 'Design systems, accessibility, and production readiness.', category: 'Design', image: 'https://unsplash.com', price: 190000 },
-  { id: 'product', title: 'Product Management', description: 'Understand product discovery and delivery.', details: 'Roadmaps, discovery, user research, and stakeholder management.', category: 'Product', image: 'https://unsplash.com', price: 195000 }
+  { id: 'frontend', title: 'Frontend Development', description: 'Build interfaces with modern web technologies.', details: 'HTML, CSS, JavaScript, React, Vite and real projects.', category: 'Frontend', image: 'https://unsplash.com', price: 200000, scheduleDate: '', scheduleTime: '' },
+  { id: 'backend', title: 'Backend Development', description: 'APIs, databases, authentication and deployment.', details: 'Node.js, Express, MongoDB, REST and best practices.', category: 'Backend', image: 'https://unsplash.com', price: 220000, scheduleDate: '', scheduleTime: '' },
+  { id: 'fullstack', title: 'Full-Stack Development', description: 'End-to-end web development skills.', details: 'Frontend + Backend + Deployment workflows and CI/CD.', category: 'Full-Stack', image: 'https://unsplash.com', price: 320000, scheduleDate: '', scheduleTime: '' },
+  { id: 'cyber', title: 'Cybersecurity', description: 'Fundamentals of secure systems and defense.', details: 'Threat modelling, secure coding, and basic forensics.', category: 'Security', image: 'https://unsplash.com', price: 180000, scheduleDate: '', scheduleTime: '' },
+  { id: 'data', title: 'Data Analysis', description: 'Learn to analyze and visualize data.', details: 'Python, SQL, statistics, and visualization tools.', category: 'Data', image: 'https://unsplash.com', price: 210000, scheduleDate: '', scheduleTime: '' },
+  { id: 'graphics', title: 'Graphics Design', description: 'Design for web and product interfaces.', details: 'Visual design, Figma, composition, and prototyping.', category: 'Design', image: 'https://unsplash.com', price: 170000, scheduleDate: '', scheduleTime: '' },
+  { id: 'production', title: 'Production Design', description: 'Ship polished products and systems.', details: 'Design systems, accessibility, and production readiness.', category: 'Design', image: 'https://unsplash.com', price: 190000, scheduleDate: '', scheduleTime: '' },
+  { id: 'product', title: 'Product Management', description: 'Understand product discovery and delivery.', details: 'Roadmaps, discovery, user research, and stakeholder management.', category: 'Product', image: 'https://unsplash.com', price: 195000, scheduleDate: '', scheduleTime: '' }
 ];
 
 const colorOptions = [
@@ -46,15 +46,19 @@ function App() {
 
   useEffect(() => {
     const coursePrices = localStorage.getItem('coursePrices');
-    if (coursePrices) {
+    const courseSchedules = localStorage.getItem('courseSchedules');
+    if (coursePrices || courseSchedules) {
       try {
-        const savedPrices = JSON.parse(coursePrices);
+        const savedPrices = coursePrices ? JSON.parse(coursePrices) : {};
+        const savedSchedules = courseSchedules ? JSON.parse(courseSchedules) : {};
         setCourses((prevCourses) => prevCourses.map((course) => ({
           ...course,
-          price: savedPrices[course.id] ?? course.price
+          price: savedPrices[course.id] ?? course.price,
+          scheduleDate: savedSchedules[course.id]?.date ?? course.scheduleDate,
+          scheduleTime: savedSchedules[course.id]?.time ?? course.scheduleTime
         })));
       } catch (err) {
-        console.error('Failed to load saved course prices:', err);
+        console.error('Failed to load saved course settings:', err);
       }
     }
 
@@ -108,6 +112,25 @@ function App() {
         return map;
       }, {});
       localStorage.setItem('coursePrices', JSON.stringify(priceMap));
+      return updated;
+    });
+  };
+
+  const handleCourseScheduleUpdate = (courseId, nextSchedule) => {
+    setCourses((prevCourses) => {
+      const updated = prevCourses.map((course) => {
+        if (course.id !== courseId) return course;
+        return {
+          ...course,
+          scheduleDate: nextSchedule.date,
+          scheduleTime: nextSchedule.time
+        };
+      });
+      const scheduleMap = updated.reduce((map, course) => {
+        map[course.id] = { date: course.scheduleDate, time: course.scheduleTime };
+        return map;
+      }, {});
+      localStorage.setItem('courseSchedules', JSON.stringify(scheduleMap));
       return updated;
     });
   };
@@ -173,7 +196,7 @@ function App() {
             <Route path="/track/:id" element={<CourseDetail courses={courses} user={user} accentColor={accentColor} />} />
             <Route path="/opportunities" element={<Opportunities accentColor={accentColor} />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/admin/*" element={<Admin accentColor={accentColor} courses={courses} onCoursePriceUpdate={handleCoursePriceUpdate} />} />
+            <Route path="/admin/*" element={<Admin accentColor={accentColor} courses={courses} onCoursePriceUpdate={handleCoursePriceUpdate} onCourseScheduleUpdate={handleCourseScheduleUpdate} />} />
             <Route path="*" element={<Home courses={courses} accentColor={accentColor} />} />
           </Routes>
         </main>
