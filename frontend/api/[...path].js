@@ -28,7 +28,8 @@ export default async function handler(req, res) {
 
     const responseBody = await backendResponse.arrayBuffer();
     backendResponse.headers.forEach((value, key) => {
-      if (key.toLowerCase() === 'transfer-encoding') return;
+      const lowerKey = key.toLowerCase();
+      if (lowerKey === 'transfer-encoding' || lowerKey === 'content-encoding' || lowerKey === 'content-length') return;
       res.setHeader(key, value);
     });
     res.status(backendResponse.status).send(Buffer.from(responseBody));
