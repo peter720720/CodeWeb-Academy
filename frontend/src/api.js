@@ -2,16 +2,20 @@ const DEFAULT_LOCAL_API = 'http://localhost:3500';
 
 const buildApiCandidates = () => {
   const candidates = [];
-  if (import.meta.env.VITE_API_URL) {
-    candidates.push(import.meta.env.VITE_API_URL);
-  }
+  const origin = (typeof window !== 'undefined' && window.location && window.location.origin) ? window.location.origin : '';
 
   if (import.meta.env.MODE === 'production') {
-    if (typeof window !== 'undefined' && window.location) {
-      candidates.push(window.location.origin);
+    if (origin) {
+      candidates.push(origin);
+    }
+    if (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== origin) {
+      candidates.push(import.meta.env.VITE_API_URL);
     }
   } else {
     candidates.push(DEFAULT_LOCAL_API);
+    if (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== DEFAULT_LOCAL_API) {
+      candidates.push(import.meta.env.VITE_API_URL);
+    }
   }
 
   return candidates.filter(Boolean);

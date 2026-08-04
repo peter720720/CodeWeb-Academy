@@ -7,9 +7,10 @@
       "config": { "distDir": "dist" }
     }
   ],
-  "rewrites": [
-    { "source": "/api/:path*", "destination": "https://code-web-academy.onrender.com/api/:path*" },
-    { "source": "/admin/:path*", "destination": "/index.html" },
-    { "source": "/:path*", "destination": "/index.html" }
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "^/api/(.*)$", "dest": "/api/$1" },
+    { "src": "^/admin(?:/.*)?$", "dest": "/index.html" },
+    { "src": "^/(.*)$", "dest": "/index.html" }
   ]
 }
